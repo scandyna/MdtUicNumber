@@ -64,6 +64,12 @@ cmake-gui .
 
 Build MdtUicNumber (see below) and install it somewhere, for example in `~/opt/MdtUicNumber`.
 
+Create a build directory and cd to it:
+```bash
+mkdir build
+cd build
+```
+
 Configure your project:
 ```bash
 cmake -DCMAKE_PREFIX_PATH=~/opt/MdtUicNumber -DCMAKE_BUILD_TYPE=Release ..
