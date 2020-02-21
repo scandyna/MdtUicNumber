@@ -5,6 +5,7 @@ default:
 
 stages:
   - build
+  - test
 
 
 .build_linux:
