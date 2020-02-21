@@ -16,6 +16,20 @@ stages:
     - mkdir build
     - cd build
     - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE -o build_tests=True ..
+    - cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWARNING_AS_ERROR=ON
+                               -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_CXX_COMPILER=$CXX_COMPILER $CMAKE_EXTRA_CACHE_ENTRIES
+                               -DBUILD_TESTS=ON -DBUILD_QT_TESTS=ON ..
+    - make -j4
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - build
+
+.test_linux:
+  stage: test
+  script:
+    - cd build
+    - ctest --output-on-failure .
 
 
 build_linux_gcc7_x86_64_debug:
@@ -25,3 +39,8 @@ build_linux_gcc7_x86_64_debug:
     CXX_COMPILER: g++-7
     BUILD_TYPE: Debug
   extends: .build_linux
+
+test_linux_gcc7_x86_64_debug:
+  dependencies:
+    - build_linux_gcc7_x86_64_debug
+  extends: .test_linux
