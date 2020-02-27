@@ -193,13 +193,39 @@ or enable it with cmake-gui.
 
 Build:
 ```bash
-cmake --build . --config RelWithDebInfo
+cmake --build . --config RelWithDebInfo -j4
 ```
 
 To run the tests:
 ```bash
-ctest --output-on-failure -C RelWithDebInfo .
+ctest . --output-on-failure -C RelWithDebInfo -j4
 ```
 
 Note that the `--config RelWithDebInfo` is only mandatory
 for multi configuration build systems, like MSVC.
+
+## Configure and build with ASan and UBSan
+
+Install the dependencies:
+```bash
+conan install -s build_type=RelWithDebInfo -o build_tests=True --build=missing ..
+```
+
+Configure MdtUicNumber:
+```bash
+cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_BUILD_TYPE=Instrumented -DBUILD_TESTS=ON -DCMAKE_INSTALL_PREFIX=~/opt/MdtUicNumber ..
+cmake-gui .
+```
+
+Set the various options, like `BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL`,
+`BUILD_TYPE_INSTRUMENTED_USE_DEBUG_SYMBOLS` and `BUILD_TYPE_INSTRUMENTED_DEFINE_NDEBUG`.
+
+Build:
+```bash
+cmake --build . --config Instrumented -j4
+```
+
+To run the tests:
+```bash
+ctest . --output-on-failure -C Instrumented -j4
+```
