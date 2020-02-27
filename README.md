@@ -193,7 +193,7 @@ or enable it with cmake-gui.
 
 Build:
 ```bash
-cmake --build . --config RelWithDebInfo -j4
+cmake --build . --config RelWithDebInfo
 ```
 
 To run the tests:
@@ -222,7 +222,11 @@ Set the various options, like `BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL`,
 
 Build:
 ```bash
-cmake --build . --config Instrumented -j4
+cmake --build . --config Instrumented
+```
+or:
+```bash
+make -j4
 ```
 
 To run the tests:
