@@ -28,6 +28,7 @@ project(MdtUicNumber VERSION ${GIT_TAG_VERSION})
 #######################
 
 include(MdtBuildOptionsUtils)
+include(MdtSanitizers)
 
 # set(CMAKE_CXX_STANDARD 17)
 
@@ -38,8 +39,31 @@ option(BUILD_TESTS "Build the tests" OFF)
 option(BUILD_QT_TESTS "Build the tests with Qt" OFF)
 option(BUILD_BENCHMARKS "Build the benchmarks" OFF)
 option(BUILD_CPP_API_DOC "Generate Doxyfile for C++ API documentation" OFF)
-mdt_set_available_build_types(Release Debug RelWithDebInfo MinSizeRel)
+mdt_set_available_build_types(Release Debug RelWithDebInfo MinSizeRel Instrumented)
 option(WARNING_AS_ERROR "Threat warnings as errors" OFF)
+
+mdt_get_available_optimization_levels(AVAILABLE_OPTIMIZATION_LEVELS)
+set(BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL "" CACHE STRING "Set optimization level for Instrumented build")
+set_property(CACHE BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL PROPERTY STRINGS ${AVAILABLE_OPTIMIZATION_LEVELS})
+option(BUILD_TYPE_INSTRUMENTED_USE_DEBUG_SYMBOLS "Add debug symbols (-g on Gcc/Clang, /DEBUG on MSVC)" ON)
+option(BUILD_TYPE_INSTRUMENTED_DEFINE_NDEBUG "Set NDEBUG definition (will disable assert)" OFF)
+
+mdt_add_address_sanitizer_option_if_available(SANITIZER_ENABLE_ADDRESS
+  HELP_STRING "Enable address sanitizer for Instrumented build"
+  INITIAL_VALUE OFF
+)
+mdt_add_memory_sanitizer_option_if_available(SANITIZER_ENABLE_MEMORY
+  HELP_STRING "Enable memory sanitizer for Instrumented build"
+  INITIAL_VALUE OFF
+)
+mdt_add_undefined_sanitizer_option_if_available(SANITIZER_ENABLE_UNDEFINED
+  HELP_STRING "Enable undefined behaviour sanitizer for Instrumented build"
+  INITIAL_VALUE OFF
+)
+mdt_add_thread_sanitizer_option_if_available(SANITIZER_ENABLE_THREAD
+  HELP_STRING "Enable thread sanitizer for Instrumented build (can be incompatible with other sanitizers)"
+  INITIAL_VALUE OFF
+)
 
 #######################
 # Warnings
@@ -87,6 +111,39 @@ endif()
 # To be able to run tests, we have to put all binaries in the same directory
 if(WIN32)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+endif()
+
+#######################
+# Sanitizers
+#######################
+
+if(SANITIZER_ENABLE_ADDRESS)
+  mdt_build_with_address_sanitizer(BUILD_TYPES Instrumented)
+endif()
+if(SANITIZER_ENABLE_MEMORY)
+  mdt_build_with_memory_sanitizer(BUILD_TYPES Instrumented)
+endif()
+if(SANITIZER_ENABLE_UNDEFINED)
+  mdt_build_with_undefined_sanitizer(BUILD_TYPES Instrumented)
+endif()
+if(SANITIZER_ENABLE_THREAD)
+  mdt_build_with_thread_sanitizer(BUILD_TYPES Instrumented)
+endif()
+
+#######################
+# Instrumented build
+#######################
+
+if(BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL)
+  add_compile_options($<$<CONFIG:Instrumented>:${BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL}>)
+endif()
+
+if(BUILD_TYPE_INSTRUMENTED_USE_DEBUG_SYMBOLS)
+  mdt_add_debug_symbols_compile_option(BUILD_TYPES Instrumented)
+endif()
+
+if(BUILD_TYPE_INSTRUMENTED_DEFINE_NDEBUG)
+  add_definitions($<$<CONFIG:Instrumented>:NDEBUG>)
 endif()
 
 #######################
