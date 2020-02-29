@@ -6,10 +6,10 @@
 ##############################################################
 include(MdtAddTest)
 
-# mdt_add_test(
-#   NAME QCoreApplicationForNonQtUsageTest
-#   TARGET qCoreApplicationForNonQtUsageTest
-#   DEPENDENCIES Mdt::QCoreApplicationForNonQtUsage Catch2::Catch2
-#   SOURCE_FILES
-#     src/QCoreApplicationForNonQtUsageTest.cpp
-# )
+mdt_add_test(
+  NAME UicNumberTest
+  TARGET uicNumberTest
+  DEPENDENCIES Mdt::UicNumber Mdt::Catch2Main
+  SOURCE_FILES
+    src/UicNumberTest.cpp
+)
