@@ -23,6 +23,7 @@ include(MdtVersionUtils)
 mdt_cmake_project_version_from_git_tag(GIT_TAG_VERSION DEFAULT_VERSION 0.1.0)
 project(MdtUicNumber VERSION ${GIT_TAG_VERSION})
 
+
 #######################
 # Options
 #######################
@@ -46,7 +47,7 @@ mdt_get_available_optimization_levels(AVAILABLE_OPTIMIZATION_LEVELS)
 set(BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL "" CACHE STRING "Set optimization level for Instrumented build")
 set_property(CACHE BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL PROPERTY STRINGS ${AVAILABLE_OPTIMIZATION_LEVELS})
 option(BUILD_TYPE_INSTRUMENTED_USE_DEBUG_SYMBOLS "Add debug symbols (-g on Gcc/Clang, /DEBUG on MSVC)" ON)
-option(BUILD_TYPE_INSTRUMENTED_DEFINE_NDEBUG "Set NDEBUG definition (will disable assert)" OFF)
+option(BUILD_TYPE_INSTRUMENTED_DEFINE_NDEBUG "Set NDEBUG definition for Instrumented build (will disable assert)" OFF)
 
 mdt_add_address_sanitizer_option_if_available(SANITIZER_ENABLE_ADDRESS
   HELP_STRING "Enable address sanitizer for Instrumented build"
@@ -147,6 +148,17 @@ if(BUILD_TYPE_INSTRUMENTED_DEFINE_NDEBUG)
 endif()
 
 #######################
+# Documentation
+#######################
+
+if(BUILD_CPP_API_DOC)
+  configure_file(
+    "${PROJECT_SOURCE_DIR}/Doxyfile.in"
+    "${PROJECT_BINARY_DIR}/Doxyfile"
+  )
+endif()
+
+#######################
 # Install
 #######################
 
@@ -178,6 +190,10 @@ endif()
 add_subdirectory(src)
 
 if(BUILD_TESTS)
+  add_library(Mdt_Catch2Main STATIC Catch2Main.cpp)
+  target_link_libraries(Mdt_Catch2Main PUBLIC Catch2::Catch2)
+  add_library(Mdt::Catch2Main ALIAS Mdt_Catch2Main)
+
   enable_testing()
   add_subdirectory(tests)
 endif()

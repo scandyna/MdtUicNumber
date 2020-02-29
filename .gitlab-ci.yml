@@ -45,3 +45,36 @@ test_linux_gcc7_x86_64_debug:
   dependencies:
     - build_linux_gcc7_x86_64_debug
   extends: .test_linux
+
+
+
+build_api_doc:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: always
+    - when: never
+  script:
+    - mkdir build
+    - cd build
+    - conan install ..
+    - cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DBUILD_CPP_API_DOC=ON ..
+    - doxygen
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - build
+
+pages:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: always
+    - when: never
+  dependencies:
+    - build_api_doc
+  script:
+    - mv build/doc/html public
+  artifacts:
+    paths:
+      - public
