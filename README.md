@@ -7,6 +7,9 @@ Wikipedia [UIC identification marking for tractive stock](https://en.wikipedia.o
 
 # Usage
 
+For the available classes, functions, and their usage,
+see [the API documentation](https://scandyna.gitlab.io/mdtuicnumber)
+
 ## Required tools and libraries
 
 Some tools and libraries are required to use MdtUicNumber:
