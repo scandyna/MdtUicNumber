@@ -189,7 +189,7 @@ It is also possible to run Qt tests.
 Those tests do not need a very recent version of Qt,
 so using the system wide installed one on Linux is sufficient.
 
-To enable Qt test, add the `-DBUILD_QT_TESTS=ON` to the cmake configuration command line,
+To enable Qt support, add the `-DENABLE_QT_SUPPORT=ON` to the cmake configuration command line,
 or enable it with cmake-gui.
 
 ## Build MdtUicNumber and run the tests

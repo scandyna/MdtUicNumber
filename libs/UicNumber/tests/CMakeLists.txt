@@ -7,6 +7,14 @@
 include(MdtAddTest)
 
 mdt_add_test(
+  NAME AlgorithmTest
+  TARGET algorithmTest
+  DEPENDENCIES Mdt::UicNumber Mdt::Catch2Main
+  SOURCE_FILES
+    src/AlgorithmTest.cpp
+)
+
+mdt_add_test(
   NAME UicNumberTest
   TARGET uicNumberTest
   DEPENDENCIES Mdt::UicNumber Mdt::Catch2Main

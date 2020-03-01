@@ -6,10 +6,18 @@
 ##############################################################
 include(MdtAddTest)
 
-# mdt_add_test(
-#   NAME QCoreApplicationForNonQtUsageTest
-#   TARGET qCoreApplicationForNonQtUsageTest
-#   DEPENDENCIES Mdt::QCoreApplicationForNonQtUsage Catch2::Catch2
-#   SOURCE_FILES
-#     src/QCoreApplicationForNonQtUsageTest.cpp
-# )
+mdt_add_test(
+  NAME AlgorithmQStringTest
+  TARGET algorithmQStringTest
+  DEPENDENCIES Mdt::UicNumber_Qt Mdt::Catch2Main
+  SOURCE_FILES
+    src/AlgorithmQStringTest.cpp
+)
+
+mdt_add_test(
+  NAME UicNumberQStringTest
+  TARGET uicNumberQStringTest
+  DEPENDENCIES Mdt::UicNumber_Qt Mdt::Catch2Main
+  SOURCE_FILES
+    src/UicNumberQStringTest.cpp
+)

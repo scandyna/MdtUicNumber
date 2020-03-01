@@ -30,17 +30,6 @@ namespace Mdt{ namespace UicNumber{
   {
    public:
 
-    /*! \brief Validate a UIC number string
-     *
-     * \tparam StringType A STL compatible string ......
-     * \todo Comparator ?
-     * \todo Mybe in algorithm..
-     */
-    template<typename StringType>
-    static
-    bool validate(const StringType & uicNumberString)
-    {
-    }
 
    private:
 

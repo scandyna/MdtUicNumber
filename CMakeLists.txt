@@ -31,13 +31,13 @@ project(MdtUicNumber VERSION ${GIT_TAG_VERSION})
 include(MdtBuildOptionsUtils)
 include(MdtSanitizers)
 
-# set(CMAKE_CXX_STANDARD 17)
+# set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
 
+option(ENABLE_QT_SUPPORT "Enable Qt support" OFF)
 option(BUILD_TESTS "Build the tests" OFF)
-option(BUILD_QT_TESTS "Build the tests with Qt" OFF)
 option(BUILD_BENCHMARKS "Build the benchmarks" OFF)
 option(BUILD_CPP_API_DOC "Generate Doxyfile for C++ API documentation" OFF)
 mdt_set_available_build_types(Release Debug RelWithDebInfo MinSizeRel Instrumented)
@@ -99,9 +99,9 @@ if(BUILD_TESTS)
   find_package(Catch2 REQUIRED)
 endif()
 
-if(BUILD_QT_TESTS)
+if(ENABLE_QT_SUPPORT)
   find_package(Threads REQUIRED)
-  find_package(Qt5 COMPONENTS Core Test REQUIRED)
+  find_package(Qt5 COMPONENTS Core REQUIRED)
 endif()
 
 #######################
@@ -177,7 +177,7 @@ mdt_install_namespace_package_config_file(
 # Qt
 #######################
 
-if(BUILD_QT_TESTS)
+if(ENABLE_QT_SUPPORT)
   add_definitions(-DQT_NO_CAST_DEFINITIONS -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_BYTEARRAY)
   set(CMAKE_AUTOMOC ON)
   set(CMAKE_AUTOUIC ON)
@@ -187,18 +187,17 @@ endif()
 # Sources and tests
 #######################
 
-add_subdirectory(src)
-
 if(BUILD_TESTS)
   add_library(Mdt_Catch2Main STATIC Catch2Main.cpp)
   target_link_libraries(Mdt_Catch2Main PUBLIC Catch2::Catch2)
   add_library(Mdt::Catch2Main ALIAS Mdt_Catch2Main)
 
   enable_testing()
-  add_subdirectory(tests)
 endif()
 
-if(BUILD_QT_TESTS)
-  enable_testing()
-  add_subdirectory(tests_Qt)
+
+add_subdirectory(libs/UicNumber)
+
+if(ENABLE_QT_SUPPORT)
+  add_subdirectory(libs/UicNumber_Qt)
 endif()
