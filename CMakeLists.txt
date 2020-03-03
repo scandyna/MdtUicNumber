@@ -31,8 +31,6 @@ project(MdtUicNumber VERSION ${GIT_TAG_VERSION})
 include(MdtBuildOptionsUtils)
 include(MdtSanitizers)
 
-# set(CMAKE_CXX_STANDARD 11)
-
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
 
@@ -80,6 +78,12 @@ else()
   if(WARNING_AS_ERROR)
     add_compile_options(-Werror)
   endif()
+endif()
+
+
+# See https://stackoverflow.com/questions/46798456/handling-gccs-noexcept-type-warning
+if( (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU") AND (${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER_EQUAL 7.2) )
+  add_compile_options(-Wno-noexcept-type)
 endif()
 
 #######################
@@ -177,6 +181,7 @@ mdt_install_namespace_package_config_file(
 # Qt
 #######################
 
+# TODO: should be imposed on tests only ? NOTE: not a target property, will it be propagated ??
 if(ENABLE_QT_SUPPORT)
   add_definitions(-DQT_NO_CAST_DEFINITIONS -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_BYTEARRAY)
   set(CMAKE_AUTOMOC ON)
