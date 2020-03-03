@@ -14,7 +14,7 @@ include(MdtInstallLibrary)
 add_library(Mdt_UicNumber INTERFACE)
 add_library(Mdt::UicNumber ALIAS Mdt_UicNumber)
 
-# target_compile_features(Mdt_UicNumber PUBLIC cxx_std_17)
+target_compile_features(Mdt_UicNumber INTERFACE cxx_std_11)
 
 # if(BUILD_USE_IPO_LTO)
 #   set_target_properties(QCoreApplicationForNonQtUsage
