@@ -9,20 +9,38 @@
 
 #include "Mdt/UicNumber/Algorithm.h"
 #include <QChar>
+// #include <QLatin1Char>
+#include <QString>
 
 namespace Mdt{ namespace UicNumber{
 
-
-  /*! \brief Check if \a c is a digit
-   *
-   * \sa isDigit(char)
+  /*! \internal
    */
-  bool isDigit(QChar c)
+  inline
+  char toCharQt(QChar c) noexcept
   {
-    return isDigit( c.toLatin1() );
+    return c.toLatin1();
   }
 
+  /*! \brief Validate the content of a string
+   *
+   * \sa validateStringContent(const std::string &)
+   */
+  inline
+  bool validateStringContent(const QString & uicNumberString)
+  {
+    return Impl::validateStringContent(uicNumberString, toCharQt);
+  }
 
+  /*! \brief Remove all spaces and hyphen in a string
+   *
+   * \sa removeSpacesAndHypthen(std::string &)
+   */
+  inline
+  void removeSpacesAndHypthens(QString & uicNumberString)
+  {
+    Impl::removeSpacesAndHypthens(uicNumberString, toCharQt);
+  }
 
 }} // namespace Mdt{ namespace UicNumber{
 
