@@ -76,7 +76,7 @@ namespace Mdt{ namespace UicNumber{
     /*! \internal
      */
     template<typename StringType, typename ToChar>
-    void removeSpacesAndHypthens(StringType & uicNumberString, ToChar toChar)
+    void removeSpacesAndDashes(StringType & uicNumberString, ToChar toChar)
     {
       using CharType = typename StringType::value_type;
 
@@ -99,7 +99,9 @@ namespace Mdt{ namespace UicNumber{
    * A UIC number can only contain:
    * - Digits
    * - Spaces
-   * - A hyphen before the check digit
+   * - A dash before the check digit
+   *
+   * \todo Current implementation tolerates many hyphens at any places
    */
   inline
   bool validateStringContent(const std::string & uicNumberString)
@@ -107,60 +109,18 @@ namespace Mdt{ namespace UicNumber{
     return Impl::validateStringContent(uicNumberString, toChar);
   }
 
-  /*! \brief Remove all spaces and hyphen in a string
+  /*! \brief Remove all spaces and dash in a string
    *
    * \note This function blindly removes spaces and hyphens,
    *   regardless of the position and count of hyphens.
    * \sa validateStringContent()
    */
   inline
-  void removeSpacesAndHypthens(std::string & uicNumberString)
+  void removeSpacesAndDashes(std::string & uicNumberString)
   {
-    Impl::removeSpacesAndHypthens(uicNumberString, toChar);
+    Impl::removeSpacesAndDashes(uicNumberString, toChar);
   }
 
-  /*! \brief Validate a UIC number string
-   *
-   * A valid UIC number contains either 11 digits (check digit missing)
-   * or 12 digits.
-   * It can optionaly contain a hyphen before the check digit.
-   * Spaces are also alowed at arbitrary places.
-   *
-   * Here are examples of accepted UIC numbers, each digit represented as \a 0 .
-   * Note that \a 0 are not accepted for some blocks:
-   * \code
-   * 00 00 00 00 000
-   * 00 00 00 00 000-0
-   * 00 00 0000 000
-   * 00 00 0000 000-0
-   * \endcode
-   *
-   * \code
-   * const std::string uicNumber = "94 85 7 560 253";
-   * const auto validationState = Mdt::UicNumber::validateUicNumberString(uicNumber);
-   * if( !validationState.isValid() ){
-   *   switch( validationState.error() ){
-   *      
-   *   }
-   *   outputError( "Given UIC number is not valid, reason: " + validationState.errorMessage() );
-   * }
-   * \endcode
-   *
-   * \code
-   * const std::string uicNumber = "94 85 7 560 253";
-   * const auto validationState = ;
-   * if( !Mdt::UicNumber::validateUicNumberString(uicNumber) ){
-   *   outputError("Given UIC number is not valid");
-   * }
-   * \endcode
-   *
-   * \tparam StringType A STL compatible string ......
-   * \todo Comparator ?
-   */
-  template<typename StringType>
-  bool validateUicNumberString(const StringType & uicNumberString)
-  {
-  }
 
 }} // namespace Mdt{ namespace UicNumber{
 

@@ -1,41 +1,57 @@
-/*
- * Copyright Philippe Steinmann 2020 - 2020.
- * Distributed under the Boost Software License, Version 1.0.
- * (See accompanying file LICENSE.txt or copy at
- * https://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef MDT_UIC_NUMBER_UIC_NUMBER_H
-#define MDT_UIC_NUMBER_UIC_NUMBER_H
+/****************************************************************************
+ **
+ ** MdtUicNumber - A C++ library to work with UIC numbers
+ **
+ ** Copyright (C) 2020-2020 Philippe Steinmann.
+ **
+ ** This program is free software: you can redistribute it and/or modify
+ ** it under the terms of the GNU Lesser General Public License as published by
+ ** the Free Software Foundation, either version 3 of the License, or
+ ** (at your option) any later version.
+ **
+ ** This program is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ** GNU Lesser General Public License for more details.
+ **
+ ** You should have received a copy of the GNU Lesser General Public License
+ ** along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ **
+ ****************************************************************************/
+#ifndef MDT_UIC_NUMBER_UIC_NUMBER_QT_H
+#define MDT_UIC_NUMBER_UIC_NUMBER_QT_H
+
+#include "Mdt/UicNumber/UicNumber.h"
+#include "AlgorithmQt.h"
+#include <QString>
+#include <cassert>
 
 namespace Mdt{ namespace UicNumber{
 
-//   /*! \brief Represents a 12 digit UIC number
-//    *
-//    * A UIC number 3 main blocks:
-//    * - The international block, digits 1-4
-//    * - The national block, digits 5-11
-//    * - A check digit, digit 12
-//    *
-//    * The international block is composed of a type code and a country code.
-//    * The UIC number can finaly be representad by 4 blocks:
-//    * - The type code, digits 1-2
-//    * - The country code, digits 3-4
-//    * - The national block, digits 5-11
-//    * - A check digit, digit 12
-//    *
-//    * \sa https://en.wikipedia.org/wiki/UIC_identification_marking_for_tractive_stock
-//    * \todo See if the class has to be a template, think not (can have function templates for StringType)
-//    */
-//   class UicNumber
-//   {
-//    public:
-// 
-// 
-//    private:
-// 
-//     
-//   };
+  /*! \brief Validate a UIC number string
+   *
+   * \sa UicNumber
+   */
+  inline
+  bool validateUicNumberStringFormat(const QString & uicNumberString)
+  {
+    return Impl::validateUicNumberStringFormat(uicNumberString, toCharQt);
+  }
+
+  /*! \brief Create a UIC number from a string
+   *
+   * \pre \a uicNumberString must have a valid format
+   * \sa validateUicNumberStringFormat(const std::string &)
+   * \sa UicNumber
+   */
+  inline
+  UicNumber fromQString(const QString & uicNumberString)
+  {
+    assert( validateUicNumberStringFormat(uicNumberString) );
+
+    return Impl::fromString(uicNumberString, toCharQt);
+  }
 
 }} // namespace Mdt{ namespace UicNumber{
 
-#endif // #ifndef MDT_UIC_NUMBER_UIC_NUMBER_H
+#endif // #ifndef MDT_UIC_NUMBER_UIC_NUMBER_QT_H

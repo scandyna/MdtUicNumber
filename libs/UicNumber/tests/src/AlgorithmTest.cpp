@@ -11,14 +11,9 @@ bool validateStringContent(const std::string & uic)
   return Mdt::UicNumber::validateStringContent(uic);
 }
 
-void removeSpacesAndHypthens(std::string & uic)
+void removeSpacesAndDashes(std::string & uic)
 {
-  Mdt::UicNumber::removeSpacesAndHypthens(uic);
-}
-
-bool validateUicNumberString(const std::string & uic)
-{
-  return Mdt::UicNumber::validateUicNumberString(uic);
+  Mdt::UicNumber::removeSpacesAndDashes(uic);
 }
 
 
@@ -60,62 +55,54 @@ TEST_CASE("validateStringContent")
   REQUIRE( !validateStringContent("AB 23 4567 890-1") );
 }
 
-TEST_CASE("removeSpacesAndHypthens")
+TEST_CASE("removeSpacesAndDashes")
 {
   SECTION("empty")
   {
     std::string uic;
-    removeSpacesAndHypthens(uic);
+    removeSpacesAndDashes(uic);
     REQUIRE( uic.empty() );
   }
 
   SECTION("space")
   {
     std::string uic = " ";
-    removeSpacesAndHypthens(uic);
+    removeSpacesAndDashes(uic);
     REQUIRE( uic == "" );
   }
 
-  SECTION("hyphen")
+  SECTION("dash")
   {
     std::string uic = "-";
-    removeSpacesAndHypthens(uic);
+    removeSpacesAndDashes(uic);
     REQUIRE( uic == "" );
   }
 
   SECTION("1")
   {
     std::string uic = "1";
-    removeSpacesAndHypthens(uic);
+    removeSpacesAndDashes(uic);
     REQUIRE( uic == "1" );
   }
 
   SECTION("12")
   {
     std::string uic = "12";
-    removeSpacesAndHypthens(uic);
+    removeSpacesAndDashes(uic);
     REQUIRE( uic == "12" );
   }
 
   SECTION("1-2")
   {
     std::string uic = "1-2";
-    removeSpacesAndHypthens(uic);
+    removeSpacesAndDashes(uic);
     REQUIRE( uic == "12" );
   }
 
   SECTION(" 01 23 4567 890-1 ")
   {
     std::string uic = " 01 23 4567 890-1 ";
-    removeSpacesAndHypthens(uic);
+    removeSpacesAndDashes(uic);
     REQUIRE( uic == "012345678901" );
   }
-}
-
-TEST_CASE("validateUicNumberString")
-{
-  REQUIRE( !validateUicNumberString("") );
-  REQUIRE( !validateUicNumberString("A") );
-  REQUIRE( !validateUicNumberString("5") );
-  REQUIRE( validateUicNumberString("94 85 7 560 253-7") );
 }

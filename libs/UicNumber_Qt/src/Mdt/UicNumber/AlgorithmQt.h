@@ -1,9 +1,23 @@
-/*
- * Copyright Philippe Steinmann 2020 - 2020.
- * Distributed under the Boost Software License, Version 1.0.
- * (See accompanying file LICENSE.txt or copy at
- * https://www.boost.org/LICENSE_1_0.txt)
- */
+/****************************************************************************
+ **
+ ** MdtUicNumber - A C++ library to work with UIC numbers
+ **
+ ** Copyright (C) 2020-2020 Philippe Steinmann.
+ **
+ ** This program is free software: you can redistribute it and/or modify
+ ** it under the terms of the GNU Lesser General Public License as published by
+ ** the Free Software Foundation, either version 3 of the License, or
+ ** (at your option) any later version.
+ **
+ ** This program is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ** GNU Lesser General Public License for more details.
+ **
+ ** You should have received a copy of the GNU Lesser General Public License
+ ** along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ **
+ ****************************************************************************/
 #ifndef MDT_UIC_NUMBER_ALGORITHM_QT_H
 #define MDT_UIC_NUMBER_ALGORITHM_QT_H
 
@@ -34,13 +48,14 @@ namespace Mdt{ namespace UicNumber{
 
   /*! \brief Remove all spaces and hyphen in a string
    *
-   * \sa removeSpacesAndHypthen(std::string &)
+   * \sa removeSpacesAndDashes(std::string &)
    */
   inline
-  void removeSpacesAndHypthens(QString & uicNumberString)
+  void removeSpacesAndDashes(QString & uicNumberString)
   {
-    Impl::removeSpacesAndHypthens(uicNumberString, toCharQt);
+    Impl::removeSpacesAndDashes(uicNumberString, toCharQt);
   }
+
 
 }} // namespace Mdt{ namespace UicNumber{
 

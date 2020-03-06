@@ -18,3 +18,30 @@
  ** along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **
  ****************************************************************************/
+#include "catch2/catch.hpp"
+#include "Mdt/UicNumber/UicNumberQt.h"
+#include <QString>
+#include <QLatin1String>
+
+bool validateUicNumberStringFormat(const char * uic)
+{
+  return Mdt::UicNumber::validateUicNumberStringFormat( QLatin1String(uic) );
+}
+
+
+TEST_CASE("validateUicNumberStringFormat")
+{
+  REQUIRE( !validateUicNumberStringFormat("") );
+  REQUIRE( !validateUicNumberStringFormat("A") );
+  REQUIRE( !validateUicNumberStringFormat("5") );
+  REQUIRE( validateUicNumberStringFormat("94 85 7 560 253-7") );
+}
+
+TEST_CASE("UicNumberfromQString")
+{
+  SECTION("94 85 7 560 253")
+  {
+    const auto uicNumber = Mdt::UicNumber::fromQString( QLatin1String("94 85 7 560 253") );
+//     REQUIRE( uicNumber.isValid() );
+  }
+}
