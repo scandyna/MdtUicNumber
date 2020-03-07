@@ -8,6 +8,7 @@
 #define MDT_UIC_NUMBER_UIC_NUMBER_H
 
 #include "Algorithm.h"
+#include "StringFormatValidationState.h"
 #include <string>
 #include <cassert>
 
@@ -76,16 +77,16 @@ namespace Mdt{ namespace UicNumber{
     /*! \internal
      */
     template<typename StringType, typename ToChar>
-    bool validateUicNumberStringFormat(StringType uicNumberString, ToChar toChar)
+    StringFormatValidationState validateUicNumberStringFormat(StringType uicNumberString, ToChar toChar)
     {
       if( !validateStringContent(uicNumberString, toChar) ){
-        return false;
+        return StringFormatValidationState(StringFormatValidationErrorCode::UnallowedChar);
       }
       removeSpacesAndDashes(uicNumberString, toChar);
       if( !stringCounts11or12chars(uicNumberString) ){
-        return false;
+        return StringFormatValidationState(StringFormatValidationErrorCode::WrongDigitCount);
       }
-      return true;
+      return StringFormatValidationState(StringFormatValidationErrorCode::NoError);
     }
 
     /*! \internal
@@ -124,6 +125,7 @@ namespace Mdt{ namespace UicNumber{
    * 00000000000
    * \endcode
    *
+   * Example:
    * \code
    * const std::string uicNumber = "94 85 7 560 253";
    * const auto validationState = Mdt::UicNumber::validateUicNumberStringFormat(uicNumber);
@@ -132,11 +134,12 @@ namespace Mdt{ namespace UicNumber{
    *      
    * 
    *     default:
-   *       outputError( "Given UIC number is not valid, reason: " + validationState.errorMessage() );
+   *       outputError( "Given UIC number is not valid, reason: %1", validationState.errorMessage() );
    *   }
    * }
    * \endcode
    *
+   * This function can also be used as it returned a bool:
    * \code
    * const std::string uicNumber = "94 85 7 560 253";
    * if( !Mdt::UicNumber::validateUicNumberStringFormat(uicNumber) ){
@@ -144,12 +147,44 @@ namespace Mdt{ namespace UicNumber{
    * }
    * \endcode
    *
+   * \sa validateUicNumberStringFormat_except()
    * \sa UicNumber
    */
   inline
-  bool validateUicNumberStringFormat(const std::string & uicNumberString)
+  StringFormatValidationState validateUicNumberStringFormat(const std::string & uicNumberString)
   {
     return Impl::validateUicNumberStringFormat(uicNumberString, toChar);
+  }
+
+  /*! \brief Validate a UIC number string format
+   *
+   * This function is the same as validateUicNumberStringFormat()
+   * but trows a exception if \a uicNumber has not a correct format.
+   *
+   * Example:
+   * \code
+   * const std::string uicNumber = "94 85 7 560 253";
+   * try{
+   *   validateUicNumberStringFormat_except(uicNumber);
+   * }catch(const StringFormatValidationError & validationError){
+   *   switch( validationError.errorCode() ){
+   *
+   *     default:
+   *       outputError( "Given UIC number is not valid, reason: %1", validationError.what() );
+   *   }
+   * }
+   * \endcode
+   *
+   * \exception StringFormatValidationError
+   * \sa validateUicNumberStringFormat()
+   * \sa UicNumber
+   *
+   * \todo Also Impl::validateUicNumberStringFormat_except()
+   */
+  inline
+  void validateUicNumberStringFormat_except(const std::string & uicNumberString)
+  {
+//     return Impl::validateUicNumberStringFormat(uicNumberString, toChar);
   }
 
   /*! \brief Create a UIC number from a string

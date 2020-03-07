@@ -30,10 +30,11 @@ namespace Mdt{ namespace UicNumber{
 
   /*! \brief Validate a UIC number string
    *
+   * \sa validateUicNumberStringFormat(const std::string &)
    * \sa UicNumber
    */
   inline
-  bool validateUicNumberStringFormat(const QString & uicNumberString)
+  StringFormatValidationState validateUicNumberStringFormat(const QString & uicNumberString)
   {
     return Impl::validateUicNumberStringFormat(uicNumberString, toCharQt);
   }
@@ -41,7 +42,7 @@ namespace Mdt{ namespace UicNumber{
   /*! \brief Create a UIC number from a string
    *
    * \pre \a uicNumberString must have a valid format
-   * \sa validateUicNumberStringFormat(const std::string &)
+   * \sa fromString()
    * \sa UicNumber
    */
   inline

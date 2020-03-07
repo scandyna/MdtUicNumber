@@ -7,6 +7,14 @@
 include(MdtAddTest)
 
 mdt_add_test(
+  NAME ErrorQtTest
+  TARGET errorQtTest
+  DEPENDENCIES Mdt::UicNumber_Qt Mdt::Catch2Main
+  SOURCE_FILES
+    src/ErrorQtTest.cpp
+)
+
+mdt_add_test(
   NAME AlgorithmQStringTest
   TARGET algorithmQStringTest
   DEPENDENCIES Mdt::UicNumber_Qt Mdt::Catch2Main
