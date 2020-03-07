@@ -8,12 +8,14 @@
 #define MDT_UIC_NUMBER_STRING_FORMAT_VALIDATION_STATE_H
 
 #include "StringFormatValidationErrorCode.h"
+#include <string>
 
 namespace Mdt{ namespace UicNumber{
 
   /*! \brief UIC number string format validation state
    *
    * \sa validateUicNumberStringFormat()
+   * \sa errorMessageString()
    */
   class StringFormatValidationState
   {
@@ -62,6 +64,26 @@ namespace Mdt{ namespace UicNumber{
 
     StringFormatValidationErrorCode mErrorCode;
   };
+
+
+  /*! \brief Get a generic error message string from \a errorCode
+   *
+   * If you use Qt, consider using errorMessageQString(),
+   * which returns a translated message.
+   */
+  inline
+  std::string errorMessageString(StringFormatValidationErrorCode errorCode)
+  {
+    switch(errorCode){
+      case StringFormatValidationErrorCode::NoError:
+        return std::string();
+      case StringFormatValidationErrorCode::WrongDigitCount:
+        return "The count of digits is wrong (allowed are 11 or 12 digits";
+      case StringFormatValidationErrorCode::UnallowedChar:
+        return "At least one unallowed char is present in the string ";
+    }
+    return std::string();
+  }
 
 }} // namespace Mdt{ namespace UicNumber{
 

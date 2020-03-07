@@ -7,7 +7,20 @@
 #ifndef MDT_UIC_NUMBER_STRING_FORMAT_VALIDATION_STATE_QT_H
 #define MDT_UIC_NUMBER_STRING_FORMAT_VALIDATION_STATE_QT_H
 
+#include "Mdt/UicNumber/StringFormatValidationState.h"
+#include <QString>
+
 namespace Mdt{ namespace UicNumber{
+
+  /*! \brief Get a generic error message string from \a errorCode
+   *
+   * \sa errorMessageString()
+   */
+  inline
+  QString errorMessageQString(StringFormatValidationErrorCode errorCode)
+  {
+  }
+
 }} // namespace Mdt{ namespace UicNumber{
 
 #endif // #ifndef MDT_UIC_NUMBER_STRING_FORMAT_VALIDATION_STATE_QT_H

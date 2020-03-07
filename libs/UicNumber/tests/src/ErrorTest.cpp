@@ -28,3 +28,8 @@ TEST_CASE("StringFormatValidationState")
     REQUIRE( !state );
   }
 }
+
+TEST_CASE("errorMessageString")
+{
+  REQUIRE( !Mdt::UicNumber::errorMessageString(StringFormatValidationErrorCode::UnallowedChar).empty() );
+}
