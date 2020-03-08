@@ -9,6 +9,7 @@
 
 #include "Mdt/UicNumber/StringFormatValidationState.h"
 #include <QString>
+#include <QCoreApplication>
 
 namespace Mdt{ namespace UicNumber{
 
@@ -19,6 +20,15 @@ namespace Mdt{ namespace UicNumber{
   inline
   QString errorMessageQString(StringFormatValidationErrorCode errorCode)
   {
+    switch(errorCode){
+      case StringFormatValidationErrorCode::NoError:
+        return QString();
+      case StringFormatValidationErrorCode::WrongDigitCount:
+        return QCoreApplication::translate("Mdt::UicNumber::errorMessageQString()", "The count of digits is wrong (allowed are 11 or 12 digits");
+      case StringFormatValidationErrorCode::UnallowedChar:
+        return QCoreApplication::translate("Mdt::UicNumber::errorMessageQString()", "At least one unallowed char is present in the string");
+    }
+    return QString();
   }
 
 }} // namespace Mdt{ namespace UicNumber{

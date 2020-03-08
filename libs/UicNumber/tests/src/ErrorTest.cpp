@@ -1,5 +1,6 @@
 #include "catch2/catch.hpp"
 #include "Mdt/UicNumber/StringFormatValidationState"
+#include "Mdt/UicNumber/StringFormatValidationError"
 
 using Mdt::UicNumber::StringFormatValidationErrorCode;
 using Mdt::UicNumber::StringFormatValidationState;

@@ -1,6 +1,10 @@
 #include "catch2/catch.hpp"
 #include "Mdt/UicNumber/UicNumber"
 
+using Mdt::UicNumber::StringFormatValidationError;
+using Mdt::UicNumber::StringFormatValidationErrorCode;
+using Mdt::UicNumber::validateUicNumberStringFormat_except;
+
 bool validateUicNumberStringFormat(const std::string & uic)
 {
   return Mdt::UicNumber::validateUicNumberStringFormat(uic);
@@ -76,11 +80,24 @@ TEST_CASE("validateUicNumberStringFormat")
 
 }
 
-TEST_CASE("UicNumberfromString")
+TEST_CASE("validateUicNumberStringFormat_except")
 {
-  SECTION("94 85 7 560 253")
-  {
-    const auto uicNumber = Mdt::UicNumber::fromString("94 85 7 560 253");
-//     REQUIRE( uicNumber.isValid() );
+  bool excpetionThrown = false;
+
+  try{
+    validateUicNumberStringFormat_except("560 253");
+  }catch(const StringFormatValidationError & error){
+    excpetionThrown = true;
+    REQUIRE( error.errorCode() == StringFormatValidationErrorCode::WrongDigitCount );
   }
+  REQUIRE( excpetionThrown );
 }
+
+// TEST_CASE("UicNumberfromString")
+// {
+//   SECTION("94 85 7 560 253")
+//   {
+//     const auto uicNumber = Mdt::UicNumber::fromString("94 85 7 560 253");
+// //     REQUIRE( uicNumber.isValid() );
+//   }
+// }

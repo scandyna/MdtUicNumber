@@ -39,6 +39,17 @@ namespace Mdt{ namespace UicNumber{
     return Impl::validateUicNumberStringFormat(uicNumberString, toCharQt);
   }
 
+  /*! \brief Validate a UIC number string
+   *
+   * \sa validateUicNumberStringFormat_except(const std::string &)
+   * \sa UicNumber
+   */
+  inline
+  void validateUicNumberStringFormat_except(const QString & uicNumberString)
+  {
+    Impl::validateUicNumberStringFormat_except(uicNumberString, toCharQt);
+  }
+
   /*! \brief Create a UIC number from a string
    *
    * \pre \a uicNumberString must have a valid format

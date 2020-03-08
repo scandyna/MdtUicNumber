@@ -60,6 +60,13 @@ namespace Mdt{ namespace UicNumber{
       return isValid();
     }
 
+    /*! \brief Get error code
+     */
+    constexpr StringFormatValidationErrorCode errorCode() const noexcept
+    {
+      return mErrorCode;
+    }
+
    private:
 
     StringFormatValidationErrorCode mErrorCode;
