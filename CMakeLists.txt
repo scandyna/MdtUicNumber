@@ -47,6 +47,10 @@ set_property(CACHE BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL PROPERTY STRINGS $
 option(BUILD_TYPE_INSTRUMENTED_USE_DEBUG_SYMBOLS "Add debug symbols (-g on Gcc/Clang, /DEBUG on MSVC)" ON)
 option(BUILD_TYPE_INSTRUMENTED_DEFINE_NDEBUG "Set NDEBUG definition for Instrumented build (will disable assert)" OFF)
 
+if(ENABLE_QT_SUPPORT)
+  option(BUILD_SHARED_LIBS "Build shared libraries (has sense for some Qt support libraries)" ON)
+endif()
+
 mdt_add_address_sanitizer_option_if_available(SANITIZER_ENABLE_ADDRESS
   HELP_STRING "Enable address sanitizer for Instrumented build"
   INITIAL_VALUE OFF
@@ -105,7 +109,10 @@ endif()
 
 if(ENABLE_QT_SUPPORT)
   find_package(Threads REQUIRED)
-  find_package(Qt5 COMPONENTS Core REQUIRED)
+  find_package(Qt5 COMPONENTS Core Gui REQUIRED)
+  if(BUILD_TESTS)
+    find_package(Qt5 COMPONENTS Test Widgets REQUIRED)
+  endif()
 endif()
 
 #######################
@@ -205,4 +212,5 @@ add_subdirectory(libs/UicNumber)
 
 if(ENABLE_QT_SUPPORT)
   add_subdirectory(libs/UicNumber_Qt)
+  add_subdirectory(libs/UicNumber_QtGui)
 endif()
