@@ -7,6 +7,7 @@
 #ifndef MDT_UIC_NUMBER_UIC_NUMBER_H
 #define MDT_UIC_NUMBER_UIC_NUMBER_H
 
+#include "TypeCode.h"
 #include "Algorithm.h"
 #include "StringFormatValidationState.h"
 #include "StringFormatValidationError.h"
