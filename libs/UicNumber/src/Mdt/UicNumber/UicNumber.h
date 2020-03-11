@@ -8,6 +8,7 @@
 #define MDT_UIC_NUMBER_UIC_NUMBER_H
 
 #include "TypeCode.h"
+#include "CountryCode.h"
 #include "Algorithm.h"
 #include "StringFormatValidationState.h"
 #include "StringFormatValidationError.h"
