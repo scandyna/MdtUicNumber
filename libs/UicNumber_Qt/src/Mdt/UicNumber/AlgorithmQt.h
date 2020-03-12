@@ -23,8 +23,8 @@
 
 #include "Mdt/UicNumber/Algorithm.h"
 #include <QChar>
-// #include <QLatin1Char>
 #include <QString>
+#include <QStringRef>
 
 namespace Mdt{ namespace UicNumber{
 
@@ -34,6 +34,16 @@ namespace Mdt{ namespace UicNumber{
   char toCharQt(QChar c) noexcept
   {
     return c.toLatin1();
+  }
+
+  /*! \internal
+   */
+  inline
+  int toIntQt(const QString & str, int position, int length)
+  {
+    assert( (position+length) <= static_cast<int>(str.length()) );
+
+    return QStringRef(&str, position, length).toInt();
   }
 
   /*! \brief Validate the content of a string

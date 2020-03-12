@@ -2,6 +2,7 @@
 #include "Mdt/UicNumber/Algorithm"
 #include <string>
 
+using Mdt::UicNumber::toInt;
 using Mdt::UicNumber::isDigit;
 using Mdt::UicNumber::isSpace;
 using Mdt::UicNumber::isAllowedChar;
@@ -16,6 +17,39 @@ void removeSpacesAndDashes(std::string & uic)
   Mdt::UicNumber::removeSpacesAndDashes(uic);
 }
 
+
+TEST_CASE("toInt")
+{
+  SECTION("00")
+  {
+    REQUIRE( toInt("00", 0, 2) == 0 );
+  }
+
+  SECTION("85")
+  {
+    REQUIRE( toInt("85", 0, 2) == 85 );
+  }
+
+  SECTION("7560253")
+  {
+    REQUIRE( toInt("7560253", 0, 7) == 7560253 );
+  }
+
+  SECTION("94857560253 94")
+  {
+    REQUIRE( toInt("94857560253", 0, 2) == 94 );
+  }
+
+  SECTION("94857560253 85")
+  {
+    REQUIRE( toInt("94857560253", 2, 2) == 85 );
+  }
+
+  SECTION("94857560253 7560253")
+  {
+    REQUIRE( toInt("94857560253", 4, 7) == 7560253 );
+  }
+}
 
 TEST_CASE("isSpace")
 {

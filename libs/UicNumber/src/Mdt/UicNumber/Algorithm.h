@@ -23,6 +23,16 @@ namespace Mdt{ namespace UicNumber{
     return c;
   }
 
+  /*! \internal
+   */
+  inline
+  int toInt(const std::string & str, int position, int length)
+  {
+    assert( (position+length) <= static_cast<int>(str.length()) );
+
+    return std::stoi(std::string(str, position, length), nullptr, 10);
+  }
+
   /*! \brief Check if \a c is a space
    */
   inline

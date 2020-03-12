@@ -5,6 +5,7 @@
 #include <QChar>
 #include <QLatin1Char>
 
+using Mdt::UicNumber::toIntQt;
 using Mdt::UicNumber::toCharQt;
 using Mdt::UicNumber::removeSpacesAndDashes;
 
@@ -18,6 +19,40 @@ TEST_CASE("toCharQt")
   REQUIRE( toCharQt(QLatin1Char('0')) == '0' );
   REQUIRE( toCharQt(QLatin1Char('9')) == '9' );
   REQUIRE( toCharQt(QLatin1Char('A')) == 'A' );
+}
+
+TEST_CASE("toIntQt")
+{
+  SECTION("00")
+  {
+    REQUIRE( toIntQt(QLatin1String("00"), 0, 2) == 0 );
+  }
+
+  SECTION("85")
+  {
+    REQUIRE( toIntQt(QLatin1String("85"), 0, 2) == 85 );
+  }
+
+  SECTION("7560253")
+  {
+    REQUIRE( toIntQt(QLatin1String("7560253"), 0, 7) == 7560253 );
+  }
+
+  SECTION("94857560253 94")
+  {
+    REQUIRE( toIntQt(QLatin1String("94857560253"), 0, 2) == 94 );
+  }
+
+  SECTION("94857560253 85")
+  {
+    REQUIRE( toIntQt(QLatin1String("94857560253"), 2, 2) == 85 );
+  }
+
+  SECTION("94857560253 7560253")
+  {
+    REQUIRE( toIntQt(QLatin1String("94857560253"), 4, 7) == 7560253 );
+  }
+
 }
 
 TEST_CASE("validateStringContent")
