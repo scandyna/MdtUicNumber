@@ -61,7 +61,7 @@ namespace Mdt{ namespace UicNumber{
   {
     assert( validateUicNumberStringFormat(uicNumberString) );
 
-    return Impl::fromString(uicNumberString, toCharQt);
+    return Impl::fromString(uicNumberString, toCharQt, toIntQt);
   }
 
 }} // namespace Mdt{ namespace UicNumber{
