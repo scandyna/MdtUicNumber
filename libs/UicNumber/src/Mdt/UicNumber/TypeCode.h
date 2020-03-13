@@ -13,6 +13,7 @@ namespace Mdt{ namespace UicNumber{
 
   /*! \brief UIC number type code
    *
+   * \sa typeCodeFromInt()
    * \sa https://en.wikipedia.org/wiki/UIC_identification_marking_for_tractive_stock
    * \sa https://en.wikipedia.org/wiki/UIC_wagon_numbers
    * \sa http://www.dansk-jernbanearkiv.dk/uic438/u438.htm
