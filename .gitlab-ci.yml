@@ -30,7 +30,7 @@ stages:
 .test_linux:
   stage: test
   variables:
-    DISPLAY: :99
+    DISPLAY: ":99"
   before_script:
     - /etc/init.d/xdummy-server start
   script:
