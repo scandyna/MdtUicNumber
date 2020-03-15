@@ -236,3 +236,15 @@ To run the tests:
 ```bash
 ctest . --output-on-failure -C Instrumented -j4
 ```
+
+# Create a Conan package
+
+The package version is picked up from git tag.
+If working on MdtUicNumber, go to the root of the source tree:
+```bash
+git tag x.y.z
+conan create . scandyna/testing --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE
+```
+
+Above examples will generate a package that uses the Qt version that is installed on the system,
+or passed to the `CMAKE_PREFIX_PATH` of your build.

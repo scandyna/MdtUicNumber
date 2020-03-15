@@ -6,10 +6,11 @@
 ##############################################################
 
 find_package(MdtCMakeModules REQUIRED)
-find_package(Mdt0 COMPONENTS UicNumber REQUIRED)
+find_package(Mdt0 COMPONENTS UicNumber_Qt REQUIRED)
+find_package(Qt5 COMPONENTS Core)
 
 add_executable(simpleApp test_package.cpp)
-target_link_libraries(simpleApp Mdt0::UicNumber)
+target_link_libraries(simpleApp Mdt0::UicNumber_Qt)
 
 enable_testing()
 
