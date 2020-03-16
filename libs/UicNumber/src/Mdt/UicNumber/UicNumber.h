@@ -220,6 +220,7 @@ namespace Mdt{ namespace UicNumber{
    *
    * Example of a fmt implementation:
    * \code
+   * inline
    * std::string myFormat(const UicNumber12CharDigitArray & digits)
    * {
    *   std::string uicNumberString(17, ' ');

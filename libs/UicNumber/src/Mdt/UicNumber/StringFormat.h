@@ -14,6 +14,7 @@ namespace Mdt{ namespace UicNumber{
 
   /*! \brief Format a UIC number to the tractive stock format
    */
+  inline
   std::string toTractiveStockFormat(const UicNumber12CharDigitArray & digits)
   {
     std::string uicNumberString(17, ' ');
@@ -41,6 +42,7 @@ namespace Mdt{ namespace UicNumber{
 
   /*! \brief Format a UIC number to the tractive stock format
    */
+  inline
   std::string toPassengerCoachFormat(const UicNumber12CharDigitArray & digits)
   {
     std::string uicNumberString(16, ' ');
