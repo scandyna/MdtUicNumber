@@ -58,7 +58,7 @@ namespace Mdt{ namespace UicNumber{
      *
      * \pre \a variableBlock must be in valid range ( 0 <= \a variableBlock <= 9999999 )
      */
-    constexpr UicNumber(TypeCode typeCode, CountryCode countryCode, int32_t variableBlock) noexcept
+    UicNumber(TypeCode typeCode, CountryCode countryCode, int32_t variableBlock) noexcept
      : mTypeCode(typeCode),
        mCountryCode(countryCode),
        mVariableBlock(variableBlock)
@@ -162,7 +162,7 @@ namespace Mdt{ namespace UicNumber{
 
    private:
 
-    void setCheckDigit()
+    void setCheckDigit() noexcept
     {
       mCheckDigit = computeCheckDigit( to11DigitArray() );
     }
