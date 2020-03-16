@@ -10,9 +10,14 @@
 #include "TypeCode.h"
 #include "CountryCode.h"
 #include "Algorithm.h"
+#include "UicNumber11DigitArray.h"
+#include "UicNumber12CharDigitArray.h"
+#include "StringFormat.h"
 #include "StringFormatValidation.h"
+#include "CheckDigitAlgorithm.h"
 #include <string>
 #include <cstdint>
+#include <algorithm>
 #include <cassert>
 
 namespace Mdt{ namespace UicNumber{
@@ -60,6 +65,7 @@ namespace Mdt{ namespace UicNumber{
     {
       assert(variableBlock >= 0);
       assert(variableBlock <= 9999999);
+      setCheckDigit();
     }
 
     /*! \brief Copy construct a UIC number from \a other
@@ -99,6 +105,47 @@ namespace Mdt{ namespace UicNumber{
       return mVariableBlock;
     }
 
+    /*! \brief Get the check digit
+     */
+    constexpr int8_t checkDigit() const noexcept
+    {
+      return mCheckDigit;
+    }
+
+    /*! \brief Get a 11 (numeric) digit array from this UIC number
+     */
+    UicNumber11DigitArray to11DigitArray() const noexcept
+    {
+      UicNumber11DigitArray digits;
+
+      digits[0] = tensDigitFromValueBase10( static_cast<int>(mTypeCode) );
+      digits[1] = onceDigitFromValueBase10( static_cast<int>(mTypeCode) );
+      digits[2] = tensDigitFromValueBase10( static_cast<int>(mCountryCode) );
+      digits[3] = onceDigitFromValueBase10( static_cast<int>(mCountryCode) );
+      digits[4] = millionsDigitFromValueBase10(mVariableBlock);
+      digits[5] = hundredThousandsDigitFromValueBase10(mVariableBlock);
+      digits[6] = tenThousandsDigitFromValueBase10(mVariableBlock);
+      digits[7] = thousandsDigitFromValueBase10(mVariableBlock);
+      digits[8] = hundredsDigitFromValueBase10(mVariableBlock);
+      digits[9] = tensDigitFromValueBase10(mVariableBlock);
+      digits[10] = onceDigitFromValueBase10(mVariableBlock);
+
+      return digits;
+    }
+
+    /*! \brief Get a 12 char digit array from this UIC number
+     */
+    UicNumber12CharDigitArray to12CharDigitArray() const noexcept
+    {
+      UicNumber12CharDigitArray charDigits;
+      const UicNumber11DigitArray intDigits = to11DigitArray();
+
+      std::transform(intDigits.cbegin(), intDigits.cend(), charDigits.begin(), charFromInt8);
+      charDigits[11] = charFromInt8(mCheckDigit);
+
+      return charDigits;
+    }
+
 //     /*! \brief
 //      */
 //     constexpr bool isValid() const noexcept
@@ -114,6 +161,11 @@ namespace Mdt{ namespace UicNumber{
 //     }
 
    private:
+
+    void setCheckDigit()
+    {
+      mCheckDigit = computeCheckDigit( to11DigitArray() );
+    }
 
     TypeCode mTypeCode;
     CountryCode mCountryCode;
@@ -157,6 +209,76 @@ namespace Mdt{ namespace UicNumber{
     assert( validateUicNumberStringFormat(uicNumberString) );
 
     return Impl::fromString(uicNumberString, toChar, toInt);
+  }
+
+  /*! \brief Get a string representation of \a uicNumber
+   *
+   * \a fmt is a functor with this signature:
+   * \code
+   * std::string myFormat(const UicNumber12CharDigitArray & digits);
+   * \endcode
+   *
+   * Example of a fmt implementation:
+   * \code
+   * std::string myFormat(const UicNumber12CharDigitArray & digits)
+   * {
+   *   std::string uicNumberString(17, ' ');
+   *
+   *   uicNumberString[0] = digits[0];
+   *   uicNumberString[1] = digits[1];
+   *
+   *   uicNumberString[3] = digits[2];
+   *   uicNumberString[4] = digits[3];
+   *
+   *   uicNumberString[6] = digits[4];
+   *
+   *   uicNumberString[8] = digits[5];
+   *   uicNumberString[9] = digits[6];
+   *   uicNumberString[10] = digits[7];
+   *
+   *   uicNumberString[12] = digits[8];
+   *   uicNumberString[13] = digits[9];
+   *   uicNumberString[14] = digits[10];
+   *   uicNumberString[15] = '-';
+   *   uicNumberString[16] = digits[11];
+   *
+   *   return uicNumberString;
+   * }
+   * \endcode
+   *
+   * \sa toString(const UicNumber &)
+   */
+  template<typename StringFormatFunc>
+  std::string toString(const UicNumber & uicNumber, StringFormatFunc fmt)
+  {
+    return fmt( uicNumber.to12CharDigitArray() );
+  }
+
+  /*! \brief Get a string representation of \a uicNumber
+   *
+   * This overload will choose a format regarding the type code
+   *
+   * \sa toString(const UicNumber &, StringFormatFunc)
+   */
+  inline
+  std::string toString(const UicNumber & uicNumber)
+  {
+    switch( uicNumber.typeCode() ){
+      case TypeCode::MiscellaneousTractiveUnit:
+      case TypeCode::ElectricLocomotive:
+      case TypeCode::DieselLocomotive:
+      case TypeCode::HighSpeedElectricMultipleUnit:
+      case TypeCode::ElectricMultipleUnit:
+      case TypeCode::DieselMultipleUnit:
+      case TypeCode::SpecialisedTrailer:
+      case TypeCode::ElectricShunter:
+      case TypeCode::DieselShunter:
+      case TypeCode::SpecialTractiveVehicle:
+        return toString(uicNumber, toTractiveStockFormat);
+      default:
+        break;
+    }
+    return toString(uicNumber, toPassengerCoachFormat);
   }
 
 }} // namespace Mdt{ namespace UicNumber{

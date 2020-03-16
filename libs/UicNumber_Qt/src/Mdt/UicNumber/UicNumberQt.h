@@ -43,6 +43,29 @@ namespace Mdt{ namespace UicNumber{
     return Impl::fromString(uicNumberString, toCharQt, toIntQt);
   }
 
+  /*! \brief Get a string representation of \a uicNumber
+   *
+   * \sa toString(const UicNumber &, StringFormatFunc)
+   * \sa toQString(const UicNumber &)
+   */
+  template<typename StringFormatFunc>
+  QString toQString(const UicNumber & uicNumber, StringFormatFunc fmt)
+  {
+    return QString::fromStdString( toString(uicNumber, fmt) );
+  }
+
+  /*! \brief Get a string representation of \a uicNumber
+   *
+   * This overload will choose a format regarding the type code
+   *
+   * \sa toQString(const UicNumber &, StringFormatFunc)
+   */
+  inline
+  QString toQString(const UicNumber & uicNumber)
+  {
+    return QString::fromStdString( toString(uicNumber) );
+  }
+
 }} // namespace Mdt{ namespace UicNumber{
 
 #endif // #ifndef MDT_UIC_NUMBER_UIC_NUMBER_QT_H

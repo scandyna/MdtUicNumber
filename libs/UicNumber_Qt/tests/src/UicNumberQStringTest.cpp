@@ -25,7 +25,7 @@
 
 using Mdt::UicNumber::TypeCode;
 using Mdt::UicNumber::CountryCode;
-
+using Mdt::UicNumber::toQString;
 
 
 TEST_CASE("UicNumberfromQString")
@@ -36,5 +36,20 @@ TEST_CASE("UicNumberfromQString")
     REQUIRE( uicNumber.typeCode() == TypeCode::ElectricMultipleUnit );
     REQUIRE( uicNumber.countryCode() == CountryCode::Switzerland );
     REQUIRE( uicNumber.variableBlock() == 7560253 );
+  }
+}
+
+TEST_CASE("toQString")
+{
+  SECTION("94 85 7 560 253-7")
+  {
+    const auto uicNumber = Mdt::UicNumber::fromString(" 9485 7 560253");
+    REQUIRE( toQString(uicNumber) == QLatin1String("94 85 7 560 253-7") );
+  }
+
+  SECTION("50 85 3943 862-4")
+  {
+    const auto uicNumber = Mdt::UicNumber::fromString("50 8539 43 862 ");
+    REQUIRE( toQString(uicNumber) == QLatin1String("50 85 3943 862-4") );
   }
 }
