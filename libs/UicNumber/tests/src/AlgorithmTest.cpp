@@ -12,6 +12,7 @@ using Mdt::UicNumber::hundredsDigitFromValueBase10;
 using Mdt::UicNumber::thousandsDigitFromValueBase10;
 using Mdt::UicNumber::tenThousandsDigitFromValueBase10;
 using Mdt::UicNumber::hundredThousandsDigitFromValueBase10;
+using Mdt::UicNumber::millionsDigitFromValueBase10;
 using Mdt::UicNumber::isDigit;
 using Mdt::UicNumber::isSpace;
 using Mdt::UicNumber::isAllowedChar;
@@ -411,6 +412,59 @@ TEST_CASE("hundredThousandsDigitFromValueBase10")
   SECTION("1'234'567")
   {
     REQUIRE( hundredThousandsDigitFromValueBase10(1234567) == 2 );
+  }
+}
+
+TEST_CASE("millionsDigitFromValueBase10")
+{
+  SECTION("0")
+  {
+    REQUIRE( millionsDigitFromValueBase10(0) == 0 );
+  }
+
+  SECTION("99")
+  {
+    REQUIRE( millionsDigitFromValueBase10(99) == 0 );
+  }
+
+  SECTION("999'999")
+  {
+    REQUIRE( millionsDigitFromValueBase10(999999) == 0 );
+  }
+
+  SECTION("1'000'000")
+  {
+    REQUIRE( millionsDigitFromValueBase10(1000000) == 1 );
+  }
+
+  SECTION("1'000'001")
+  {
+    REQUIRE( millionsDigitFromValueBase10(1000001) == 1 );
+  }
+
+  SECTION("1'000'002")
+  {
+    REQUIRE( millionsDigitFromValueBase10(1000002) == 1 );
+  }
+
+  SECTION("123")
+  {
+    REQUIRE( millionsDigitFromValueBase10(123) == 0 );
+  }
+
+  SECTION("123'456")
+  {
+    REQUIRE( millionsDigitFromValueBase10(123456) == 0 );
+  }
+
+  SECTION("1'234'567")
+  {
+    REQUIRE( millionsDigitFromValueBase10(1234567) == 1 );
+  }
+
+  SECTION("12'345'678")
+  {
+    REQUIRE( millionsDigitFromValueBase10(12345678) == 2 );
   }
 }
 

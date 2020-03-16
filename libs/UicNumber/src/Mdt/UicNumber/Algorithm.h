@@ -193,6 +193,26 @@ namespace Mdt{ namespace UicNumber{
     return (hundredThousands - tenThousandsDigitFromValueBase10(value)) / 100000;
   }
 
+  /*! \brief Get the millions digit from \a value
+   *
+   * Examples:
+   * \code
+   * millionsDigitFromValueBase10(12'345) == 0
+   * millionsDigitFromValueBase10(123'456) == 0
+   * millionsDigitFromValueBase10(1'234'567) == 1
+   * millionsDigitFromValueBase10(12'345'678) == 2
+   * \endcode
+   */
+  inline
+  int millionsDigitFromValueBase10(int value)
+  {
+    const int millions = value % 10000000;
+    if(millions < 1000000){
+      return 0;
+    }
+    return (millions - hundredThousandsDigitFromValueBase10(value)) / 1000000;
+  }
+
   /*! \brief Check if \a c is allowed in a UIC number string
    *
    * Allowed chars are:
