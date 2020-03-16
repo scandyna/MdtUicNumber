@@ -7,10 +7,12 @@
 #ifndef MDT_UIC_NUMBER_ALGORITHM_H
 #define MDT_UIC_NUMBER_ALGORITHM_H
 
+#include "UicNumber11DigitArray.h"
 #include <cctype>
 #include <string>
 #include <iterator>
 #include <algorithm>
+#include <cstdint>
 #include <cassert>
 
 namespace Mdt{ namespace UicNumber{
@@ -21,16 +23,6 @@ namespace Mdt{ namespace UicNumber{
   char toChar(char c) noexcept
   {
     return c;
-  }
-
-  /*! \internal
-   */
-  inline
-  int toInt(const std::string & str, int position, int length)
-  {
-    assert( (position+length) <= static_cast<int>(str.length()) );
-
-    return std::stoi(std::string(str, position, length), nullptr, 10);
   }
 
   /*! \brief Check if \a c is a space
@@ -51,6 +43,30 @@ namespace Mdt{ namespace UicNumber{
     return std::isdigit(static_cast<unsigned char>( toChar(c) ));
   }
 
+  /*! \internal
+   *
+   * \pre \a c must represent a numeric value in base 10
+   */
+  inline
+  int8_t int8FromChar(char c)
+  {
+    assert( isDigit(c) );
+
+    return c - '0';
+  }
+
+  /*! \internal
+   */
+  inline
+  int toInt(const std::string & str, int position, int length)
+  {
+    assert( (position+length) <= static_cast<int>(str.length()) );
+
+    return std::stoi(std::string(str, position, length), nullptr, 10);
+  }
+
+
+
   /*! \brief Check if \a c is allowed in a UIC number string
    *
    * Allowed chars are:
@@ -64,11 +80,16 @@ namespace Mdt{ namespace UicNumber{
     return isDigit(c) || isSpace(c) || (c == '-');
   }
 
-  /*! \brief Get the characters that are allowed for a UIC number in a string
-   */
-
 
   namespace Impl{
+
+    /*! \internal
+     */
+    template<typename StringType>
+    bool stringCounts11or12chars(const StringType & str) noexcept
+    {
+      return (str.size() == 11) || (str.size() == 12);
+    }
 
     /*! \internal
      */
@@ -101,6 +122,23 @@ namespace Mdt{ namespace UicNumber{
       uicNumberString.resize(count);
     }
 
+    /*! \internal
+     */
+    template<typename StringType, typename ToChar>
+    UicNumber11DigitArray uicNumber11DigitArrayFromString(StringType uicNumberString, ToChar toChar)
+    {
+      UicNumber11DigitArray digits;
+
+      removeSpacesAndDashes(uicNumberString, toChar);
+      assert( stringCounts11or12chars(uicNumberString) );
+
+      for(int i = 0; i < 11; ++i){
+        digits[i] = int8FromChar( toChar(uicNumberString[i]) );
+      }
+
+      return digits;
+    }
+
   } // namespace Impl{
 
 
@@ -130,7 +168,6 @@ namespace Mdt{ namespace UicNumber{
   {
     Impl::removeSpacesAndDashes(uicNumberString, toChar);
   }
-
 
 }} // namespace Mdt{ namespace UicNumber{
 

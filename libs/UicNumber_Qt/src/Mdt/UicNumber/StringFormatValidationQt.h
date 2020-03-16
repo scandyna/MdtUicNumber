@@ -18,56 +18,38 @@
  ** along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **
  ****************************************************************************/
-#ifndef MDT_UIC_NUMBER_ALGORITHM_QT_H
-#define MDT_UIC_NUMBER_ALGORITHM_QT_H
+#ifndef MDT_UIC_NUMBER_STRING_FORMAT_VALIDATION_QT_H
+#define MDT_UIC_NUMBER_STRING_FORMAT_VALIDATION_QT_H
 
-#include "Mdt/UicNumber/Algorithm.h"
-#include <QChar>
+#include "AlgorithmQt"
+#include "Mdt/UicNumber/StringFormatValidation.h"
 #include <QString>
-#include <QStringRef>
-#include <cassert>
 
 namespace Mdt{ namespace UicNumber{
 
-  /*! \internal
-   */
-  inline
-  char toCharQt(QChar c) noexcept
-  {
-    return c.toLatin1();
-  }
-
-  /*! \internal
-   */
-  inline
-  int toIntQt(const QString & str, int position, int length)
-  {
-    assert( (position+length) <= static_cast<int>(str.length()) );
-
-    return QStringRef(&str, position, length).toInt();
-  }
-
-  /*! \brief Validate the content of a string
+  /*! \brief Validate a UIC number string
    *
-   * \sa validateStringContent(const std::string &)
+   * \sa validateUicNumberStringFormat(const std::string &)
+   * \sa UicNumber
    */
   inline
-  bool validateStringContent(const QString & uicNumberString)
+  StringFormatValidationState validateUicNumberStringFormat(const QString & uicNumberString)
   {
-    return Impl::validateStringContent(uicNumberString, toCharQt);
+    return Impl::validateUicNumberStringFormat(uicNumberString, toCharQt);
   }
 
-  /*! \brief Remove all spaces and hyphen in a string
+  /*! \brief Validate a UIC number string
    *
-   * \sa removeSpacesAndDashes(std::string &)
+   * \sa validateUicNumberStringFormat_except(const std::string &)
+   * \sa UicNumber
    */
   inline
-  void removeSpacesAndDashes(QString & uicNumberString)
+  void validateUicNumberStringFormat_except(const QString & uicNumberString)
   {
-    Impl::removeSpacesAndDashes(uicNumberString, toCharQt);
+    Impl::validateUicNumberStringFormat_except(uicNumberString, toCharQt);
   }
-
 
 }} // namespace Mdt{ namespace UicNumber{
 
-#endif // #ifndef MDT_UIC_NUMBER_ALGORITHM_QT_H
+#endif // #ifndef MDT_UIC_NUMBER_STRING_FORMAT_VALIDATION_QT_H
+

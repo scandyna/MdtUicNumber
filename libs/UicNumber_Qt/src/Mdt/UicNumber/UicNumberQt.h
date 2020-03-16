@@ -21,34 +21,13 @@
 #ifndef MDT_UIC_NUMBER_UIC_NUMBER_QT_H
 #define MDT_UIC_NUMBER_UIC_NUMBER_QT_H
 
-#include "Mdt/UicNumber/UicNumber.h"
 #include "AlgorithmQt.h"
+#include "StringFormatValidationQt.h"
+#include "Mdt/UicNumber/UicNumber.h"
 #include <QString>
 #include <cassert>
 
 namespace Mdt{ namespace UicNumber{
-
-  /*! \brief Validate a UIC number string
-   *
-   * \sa validateUicNumberStringFormat(const std::string &)
-   * \sa UicNumber
-   */
-  inline
-  StringFormatValidationState validateUicNumberStringFormat(const QString & uicNumberString)
-  {
-    return Impl::validateUicNumberStringFormat(uicNumberString, toCharQt);
-  }
-
-  /*! \brief Validate a UIC number string
-   *
-   * \sa validateUicNumberStringFormat_except(const std::string &)
-   * \sa UicNumber
-   */
-  inline
-  void validateUicNumberStringFormat_except(const QString & uicNumberString)
-  {
-    Impl::validateUicNumberStringFormat_except(uicNumberString, toCharQt);
-  }
 
   /*! \brief Create a UIC number from a string
    *

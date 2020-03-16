@@ -2,6 +2,8 @@
 #include "Mdt/UicNumber/Algorithm"
 #include <string>
 
+using Mdt::UicNumber::UicNumber11DigitArray;
+using Mdt::UicNumber::int8FromChar;
 using Mdt::UicNumber::toInt;
 using Mdt::UicNumber::isDigit;
 using Mdt::UicNumber::isSpace;
@@ -17,6 +19,41 @@ void removeSpacesAndDashes(std::string & uic)
   Mdt::UicNumber::removeSpacesAndDashes(uic);
 }
 
+UicNumber11DigitArray uicNumber11DigitArrayFromString(const std::string & uic)
+{
+  using Mdt::UicNumber::toChar;
+
+  return Mdt::UicNumber::Impl::uicNumber11DigitArrayFromString(uic, toChar);
+}
+
+
+TEST_CASE("int8FromChar")
+{
+  SECTION("0")
+  {
+    REQUIRE( int8FromChar('0') == 0 );
+  }
+  SECTION("1")
+  {
+    REQUIRE( int8FromChar('1') == 1 );
+  }
+  SECTION("2")
+  {
+    REQUIRE( int8FromChar('2') == 2 );
+  }
+  SECTION("3")
+  {
+    REQUIRE( int8FromChar('3') == 3 );
+  }
+  SECTION("5")
+  {
+    REQUIRE( int8FromChar('5') == 5 );
+  }
+  SECTION("9")
+  {
+    REQUIRE( int8FromChar('9') == 9 );
+  }
+}
 
 TEST_CASE("toInt")
 {
@@ -138,5 +175,18 @@ TEST_CASE("removeSpacesAndDashes")
     std::string uic = " 01 23 4567 890-1 ";
     removeSpacesAndDashes(uic);
     REQUIRE( uic == "012345678901" );
+  }
+}
+
+TEST_CASE("uicNumber11DigitArrayFromString")
+{
+  SECTION("94 85 7 560 253")
+  {
+    REQUIRE( uicNumber11DigitArrayFromString("94 85 7 560 253") == UicNumber11DigitArray{9,4,8,5,7,5,6,0,2,5,3} );
+  }
+
+  SECTION("94 85 7 560 253-7")
+  {
+    REQUIRE( uicNumber11DigitArrayFromString("94 85 7 560 253-7") == UicNumber11DigitArray{9,4,8,5,7,5,6,0,2,5,3} );
   }
 }

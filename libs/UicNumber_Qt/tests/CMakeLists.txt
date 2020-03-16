@@ -23,6 +23,22 @@ mdt_add_test(
 )
 
 mdt_add_test(
+  NAME CheckDigitQtTest
+  TARGET checkDigitQtTest
+  DEPENDENCIES Mdt::UicNumber_Qt Mdt::Catch2Main
+  SOURCE_FILES
+    src/CheckDigitQtTest.cpp
+)
+
+mdt_add_test(
+  NAME StringFormatValidationQtTest
+  TARGET stringFormatValidationQtTest
+  DEPENDENCIES Mdt::UicNumber_Qt Mdt::Catch2Main
+  SOURCE_FILES
+    src/StringFormatValidationQtTest.cpp
+)
+
+mdt_add_test(
   NAME UicNumberQStringTest
   TARGET uicNumberQStringTest
   DEPENDENCIES Mdt::UicNumber_Qt Mdt::Catch2Main

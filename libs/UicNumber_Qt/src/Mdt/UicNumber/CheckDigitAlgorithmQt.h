@@ -18,56 +18,28 @@
  ** along with this program.  If not, see <https://www.gnu.org/licenses/>.
  **
  ****************************************************************************/
-#ifndef MDT_UIC_NUMBER_ALGORITHM_QT_H
-#define MDT_UIC_NUMBER_ALGORITHM_QT_H
+#ifndef MDT_UIC_NUMBER_CHECK_DIGIT_ALGORITHM_QT_H
+#define MDT_UIC_NUMBER_CHECK_DIGIT_ALGORITHM_QT_H
 
-#include "Mdt/UicNumber/Algorithm.h"
-#include <QChar>
-#include <QString>
-#include <QStringRef>
+#include "StringFormatValidationQt.h"
+#include "Mdt/UicNumber/CheckDigitAlgorithm.h"
 #include <cassert>
 
 namespace Mdt{ namespace UicNumber{
 
-  /*! \internal
-   */
-  inline
-  char toCharQt(QChar c) noexcept
-  {
-    return c.toLatin1();
-  }
-
-  /*! \internal
-   */
-  inline
-  int toIntQt(const QString & str, int position, int length)
-  {
-    assert( (position+length) <= static_cast<int>(str.length()) );
-
-    return QStringRef(&str, position, length).toInt();
-  }
-
-  /*! \brief Validate the content of a string
+  /*! \brief Compute the check digit for \a uicNumberString
    *
-   * \sa validateStringContent(const std::string &)
+   * \pre \a uicNumberString must have a valid format
+   * \sa computeCheckDigitFromString(const std::string &)
    */
   inline
-  bool validateStringContent(const QString & uicNumberString)
+  int8_t computeCheckDigitFromQString(const QString & uicNumberString)
   {
-    return Impl::validateStringContent(uicNumberString, toCharQt);
-  }
+    assert( validateUicNumberStringFormat(uicNumberString) );
 
-  /*! \brief Remove all spaces and hyphen in a string
-   *
-   * \sa removeSpacesAndDashes(std::string &)
-   */
-  inline
-  void removeSpacesAndDashes(QString & uicNumberString)
-  {
-    Impl::removeSpacesAndDashes(uicNumberString, toCharQt);
+    return Impl::computeCheckDigitFromString(uicNumberString, toCharQt);
   }
-
 
 }} // namespace Mdt{ namespace UicNumber{
 
-#endif // #ifndef MDT_UIC_NUMBER_ALGORITHM_QT_H
+#endif // #ifndef MDT_UIC_NUMBER_CHECK_DIGIT_ALGORITHM_QT_H
