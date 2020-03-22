@@ -237,6 +237,29 @@ To run the tests:
 ctest . --output-on-failure -C Instrumented -j4
 ```
 
+## Configure and build with Clang
+
+This requires modifications in the `settings.yml` Conan configuration,
+and also some profile files.
+See my [conan-config repository](https://gitlab.com/scandyna/conan-config) for more informations.
+
+Install the dependencies:
+```bash
+conan install --profile linux_clang6.0_x86_64_libc++ -s build_type=RelWithDebInfo -o build_tests=True --build=missing ..
+```
+
+Configure MdtUicNumber:
+```bash
+cmake -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_CXX_COMPILER=clang++-6.0 -DCMAKE_C_FLAGS_INIT=-stdlib=libc++ -DCMAKE_CXX_FLAGS_INIT=-stdlib=libc++ -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake ..
+cmake-gui .
+```
+
+Build and run the tests:
+```bash
+make -j4
+make test
+```
+
 # Create a Conan package
 
 The package version is picked up from git tag.
