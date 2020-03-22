@@ -66,6 +66,21 @@ test_linux_gcc7_x86_64_release:
   extends: .test_linux
 
 
+build_linux_clang6.0_x86_64_libc++_release:
+  variables:
+    CONAN_PROFILE: linux_clang6.0_x86_64_libc++
+    C_COMPILER: clang-6.0
+    CXX_COMPILER: clang++-6.0
+    BUILD_TYPE: Release
+    CMAKE_EXTRA_CACHE_ENTRIES: -DCMAKE_C_FLAGS_INIT=-stdlib=libc++ -DCMAKE_CXX_FLAGS_INIT=-stdlib=libc++
+  extends: .build_linux
+
+test_linux_clang6.0_x86_64_libc++_release:
+  dependencies:
+    - build_linux_clang6.0_x86_64_libc++_release
+  extends: .test_linux
+
+
 
 .deploy_linux_conan:
   stage: deploy
