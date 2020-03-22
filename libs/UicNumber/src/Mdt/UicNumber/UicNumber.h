@@ -58,7 +58,7 @@ namespace Mdt{ namespace UicNumber{
      *
      * \pre \a variableBlock must be in valid range ( 0 <= \a variableBlock <= 9999999 )
      */
-    constexpr UicNumber(TypeCode typeCode, CountryCode countryCode, int32_t variableBlock) noexcept
+    UicNumber(TypeCode typeCode, CountryCode countryCode, int32_t variableBlock) noexcept
      : mTypeCode(typeCode),
        mCountryCode(countryCode),
        mVariableBlock(variableBlock)
@@ -74,7 +74,7 @@ namespace Mdt{ namespace UicNumber{
 
     /*! \brief Copy assign \a other to this UIC number
      */
-    constexpr UicNumber & operator=(const UicNumber & other) noexcept = default;
+    UicNumber & operator=(const UicNumber & other) noexcept = default;
 
     /*! \brief Move construct a UIC number from \a other
      */
@@ -82,7 +82,7 @@ namespace Mdt{ namespace UicNumber{
 
     /*! \brief Move assign \a other to this UIC number
      */
-    constexpr UicNumber & operator=(UicNumber && other) noexcept = default;
+    UicNumber & operator=(UicNumber && other) noexcept = default;
 
     /*! \brief Get type code
      */
