@@ -58,7 +58,7 @@ namespace Mdt{ namespace UicNumber{
      *
      * \pre \a variableBlock must be in valid range ( 0 <= \a variableBlock <= 9999999 )
      */
-    UicNumber(TypeCode typeCode, CountryCode countryCode, int32_t variableBlock) noexcept
+    constexpr UicNumber(TypeCode typeCode, CountryCode countryCode, int32_t variableBlock) noexcept
      : mTypeCode(typeCode),
        mCountryCode(countryCode),
        mVariableBlock(variableBlock)
