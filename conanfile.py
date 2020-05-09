@@ -32,6 +32,7 @@ class MdtUicNumberConan(ConanFile):
 
   def configure_cmake(self):
     cmake = CMake(self)
+    cmake.definitions["FROM_CONAN_PROJECT_VERSION"] = self.version
     cmake.definitions["CMAKE_TOOLCHAIN_FILE"] = "%s/conan_paths.cmake" % (self.build_folder)
     cmake.definitions["ENABLE_QT_SUPPORT"] = "ON"
     cmake.definitions["WARNING_AS_ERROR"] = "ON"

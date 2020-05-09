@@ -20,9 +20,16 @@ find_package(MdtCMakeModules REQUIRED)
 
 include(MdtVersionUtils)
 
-mdt_cmake_project_version_from_git_tag(GIT_TAG_VERSION DEFAULT_VERSION 0.1.0)
-project(MdtUicNumber VERSION ${GIT_TAG_VERSION})
+set(INITIAL_PROJECT_VERSION)
+if(FROM_CONAN_PROJECT_VERSION)
+  set(INITIAL_PROJECT_VERSION ${FROM_CONAN_PROJECT_VERSION})
+else()
+  mdt_cmake_project_version_from_git_tag(INITIAL_PROJECT_VERSION DEFAULT_VERSION 0.1.0)
+endif()
 
+project(MdtUicNumber VERSION ${INITIAL_PROJECT_VERSION})
+
+unset(INITIAL_PROJECT_VERSION)
 
 #######################
 # Options
