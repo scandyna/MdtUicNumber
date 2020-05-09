@@ -8,7 +8,7 @@ class MdtUicNumberConan(ConanFile):
   license = "BSD 3-Clause"
   url = "https://gitlab.com/scandyna/mdtuicnumber"
   description = "C++ library to work with UIC numbers"
-  #settings = "os", "compiler", "build_type", "arch"
+  settings = "os", "compiler", "build_type", "arch"
   options = {"build_tests": [True, False]}
   default_options = {"build_tests": False}
   requires = "MdtCMakeModules/[>=0.14.3]@scandyna/testing"
