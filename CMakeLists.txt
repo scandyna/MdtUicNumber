@@ -6,14 +6,23 @@
 ##############################################################
 cmake_minimum_required(VERSION 3.10)
 
-#######################################################
-# Project definition with versionning got from git tag
-#######################################################
-
 # CMAKE_PREFIX_PATH is empty before any call to project()
 # Because set_project_version() does not exist,
 # we call the project command twice (is there a cleaner solution?)
 project(MdtUicNumber)
+
+#######################
+# Conan
+#######################
+
+if(EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+  include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+  conan_basic_setup(NO_OUTPUT_DIRS)
+endif()
+
+#######################################################
+# Project definition with versionning got from git tag
+#######################################################
 
 find_package(Git REQUIRED)
 find_package(MdtCMakeModules REQUIRED)

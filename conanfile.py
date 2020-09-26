@@ -12,7 +12,7 @@ class MdtUicNumberConan(ConanFile):
   options = {"build_tests": [True, False]}
   default_options = {"build_tests": False}
   requires = "MdtCMakeModules/[>=0.14.3]@scandyna/testing"
-  generators = "cmake_paths", "virtualenv"
+  generators = "cmake", "cmake_paths", "virtualenv"
   exports_sources = "libs/*", "CMakeLists.txt", "conanfile.py", "LICENSE.txt"
   # If no_copy_source is False, conan copies sources to build directory and does in-source build,
   # resulting having build files installed in the package
@@ -37,7 +37,6 @@ class MdtUicNumberConan(ConanFile):
   def configure_cmake(self):
     cmake = CMake(self)
     cmake.definitions["FROM_CONAN_PROJECT_VERSION"] = self.version
-    cmake.definitions["CMAKE_TOOLCHAIN_FILE"] = "%s/conan_paths.cmake" % (self.build_folder)
     cmake.definitions["ENABLE_QT_SUPPORT"] = "ON"
     cmake.definitions["WARNING_AS_ERROR"] = "ON"
     return cmake

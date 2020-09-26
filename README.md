@@ -28,6 +28,11 @@ In your source directory, create a CMakeLists.txt:
 cmake_minimum_required(VERSION 3.10)
 project(MyApp)
 
+if(EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+  include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+  conan_basic_setup(NO_OUTPUT_DIRS)
+endif()
+
 find_package(Threads REQUIRED)
 find_package(Mdt0 COMPONENTS UicNumber REQUIRED)
 
@@ -43,7 +48,8 @@ In your source directory, create a `conanfile.txt`:
 MdtUicNumber/x.y.z@scandyna/testing
 
 [generators]
-cmake_paths
+cmake
+virtualenv
 ```
 
 Create a build directory and cd to it:
@@ -57,10 +63,20 @@ Install the dependencies:
 conan install -s build_type=Release --build=missing ..
 ```
 
+Activate the build environment:
+```bash
+source activate.sh
+```
+
 Configure your project:
 ```bash
-cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake-gui .
+```
+
+To restore the standard environment:
+```bash
+source deactivate.sh
 ```
 
 ## Project configuration without Conan
@@ -124,7 +140,8 @@ conan install -s build_type=Release --build=missing ..
 
 Configure MdtUicNumber:
 ```bash
-cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=~/opt/MdtUicNumber ..
+source activate.sh
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=~/opt/MdtUicNumber ..
 cmake-gui .
 ```
 
@@ -181,7 +198,8 @@ conan install -s build_type=RelWithDebInfo -o build_tests=True --build=missing .
 
 Configure MdtUicNumber:
 ```bash
-cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTS=ON -DCMAKE_INSTALL_PREFIX=~/opt/MdtUicNumber ..
+source activate.sh
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTS=ON -DCMAKE_INSTALL_PREFIX=~/opt/MdtUicNumber ..
 cmake-gui .
 ```
 
@@ -216,7 +234,8 @@ conan install -s build_type=RelWithDebInfo -o build_tests=True --build=missing .
 
 Configure MdtUicNumber:
 ```bash
-cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_BUILD_TYPE=Instrumented -DBUILD_TESTS=ON -DCMAKE_INSTALL_PREFIX=~/opt/MdtUicNumber ..
+source activate.sh
+cmake -DCMAKE_BUILD_TYPE=Instrumented -DBUILD_TESTS=ON -DCMAKE_INSTALL_PREFIX=~/opt/MdtUicNumber ..
 cmake-gui .
 ```
 
@@ -250,7 +269,8 @@ conan install --profile linux_clang6.0_x86_64_libc++ -s build_type=RelWithDebInf
 
 Configure MdtUicNumber:
 ```bash
-cmake -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_CXX_COMPILER=clang++-6.0 -DCMAKE_C_FLAGS_INIT=-stdlib=libc++ -DCMAKE_CXX_FLAGS_INIT=-stdlib=libc++ -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake ..
+source activate.sh
+cmake ..
 cmake-gui .
 ```
 
