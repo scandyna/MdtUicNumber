@@ -30,6 +30,10 @@ class MdtUicNumberConan(ConanFile):
       self.requires("Catch2/[>=2.11.1]@catchorg/stable")
 
 
+  def package_id(self):
+    del self.info.options.build_tests
+
+
   def configure_cmake(self):
     cmake = CMake(self)
     cmake.definitions["FROM_CONAN_PROJECT_VERSION"] = self.version
