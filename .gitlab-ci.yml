@@ -18,9 +18,11 @@ stages:
     - mkdir build
     - cd build
     - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE -o build_tests=True ..
+    - source activate.sh
     - cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWARNING_AS_ERROR=ON
                                -DBUILD_TESTS=ON -DENABLE_QT_SUPPORT=ON ..
     - make -j4
+    - source deactivate.sh
   artifacts:
     expire_in: 1 day
     paths:
