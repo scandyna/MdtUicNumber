@@ -77,14 +77,14 @@ test_linux_gcc7_x86_64_release:
 
 build_linux_clang6.0_x86_64_libc++_debug:
   variables:
-    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_gui_modules
+    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_widgets_modules
     BUILD_TYPE: Debug
     CONAN_EXTRA_ARGUMENTS: -o MdtUicNumber:use_conan_qt=True
   extends: .build_linux
 
 test_linux_clang6.0_x86_64_libc++_debug:
   variables:
-    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_gui_modules
+    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_widgets_modules
     BUILD_TYPE: Debug
     CONAN_EXTRA_ARGUMENTS: -o MdtUicNumber:use_conan_qt=True
   dependencies:
@@ -94,14 +94,14 @@ test_linux_clang6.0_x86_64_libc++_debug:
 
 build_linux_clang6.0_x86_64_libc++_release:
   variables:
-    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_gui_modules
+    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_widgets_modules
     BUILD_TYPE: Release
     CONAN_EXTRA_ARGUMENTS: -o MdtUicNumber:use_conan_qt=True
   extends: .build_linux
 
 test_linux_clang6.0_x86_64_libc++_release:
   variables:
-    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_gui_modules
+    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_widgets_modules
     BUILD_TYPE: Release
     CONAN_EXTRA_ARGUMENTS: -o MdtUicNumber:use_conan_qt=True
   dependencies:
@@ -148,21 +148,21 @@ deploy_linux_gcc7_x86_64_relwithdebinfo:
 
 deploy_linux_clang6.0_x86_64_libc++_debug:
   variables:
-    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_gui_modules
+    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_widgets_modules
     CONAN_EXTRA_ARGUMENTS: -o MdtUicNumber:use_conan_qt=True
     BUILD_TYPE: Debug
   extends: .deploy_linux_conan
 
 deploy_linux_clang6.0_x86_64_libc++_release:
   variables:
-    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_gui_modules
+    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_widgets_modules
     CONAN_EXTRA_ARGUMENTS: -o MdtUicNumber:use_conan_qt=True
     BUILD_TYPE: Release
   extends: .deploy_linux_conan
 
 deploy_linux_clang6.0_x86_64_libc++_relwithdebinfo:
   variables:
-    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_gui_modules
+    CONAN_PROFILE: linux_clang6.0_x86_64_libc++_qt_widgets_modules
     CONAN_EXTRA_ARGUMENTS: -o MdtUicNumber:use_conan_qt=True
     BUILD_TYPE: RelWithDebInfo
   extends: .deploy_linux_conan
