@@ -9,8 +9,12 @@ class MdtUicNumberConan(ConanFile):
   url = "https://gitlab.com/scandyna/mdtuicnumber"
   description = "C++ library to work with UIC numbers"
   settings = "os", "compiler", "build_type", "arch"
-  options = {"build_tests": [True, False]}
-  default_options = {"build_tests": False}
+  options = {"shared": [True, False],
+             "use_conan_qt": [True, False],
+             "build_tests": [True, False]}
+  default_options = {"shared": True,
+                     "use_conan_qt": False,
+                     "build_tests": False}
   requires = "MdtCMakeModules/[>=0.14.3]@scandyna/testing"
   generators = "cmake", "cmake_paths", "virtualenv"
   exports_sources = "libs/*", "CMakeLists.txt", "conanfile.py", "LICENSE.txt"
@@ -28,6 +32,11 @@ class MdtUicNumberConan(ConanFile):
 
     if self.options.build_tests:
       self.requires("Catch2/[>=2.11.1]@catchorg/stable")
+
+    # Building 5.14.x causes currently problems (8.04.2020)
+    # As workaround, try fix a known version that we can build
+    if self.options.use_conan_qt:
+      self.requires("qt/5.12.7@bincrafters/stable")
 
 
   def package_id(self):
