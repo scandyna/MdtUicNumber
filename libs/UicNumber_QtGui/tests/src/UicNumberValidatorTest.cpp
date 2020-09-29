@@ -23,15 +23,23 @@
 #include <QApplication>
 #include <QWidget>
 #include <QLineEdit>
+#include <QTimer>
 
 using Mdt::UicNumber::UicNumberValidator;
 
-void displayWidget(QWidget &widget)
+void showWidgetForever(QWidget &widget)
 {
   widget.show();
   while( widget.isVisible() ){
     QTest::qWait(500);
   }
+}
+
+void showWidgetAndQuitApp(QWidget &widget)
+{
+  widget.show();
+  QTimer::singleShot(20, &widget, &QWidget::hide);
+  QTimer::singleShot(100, qApp, &QApplication::quit);
 }
 
 /*
@@ -42,7 +50,7 @@ void UicNumberValidatorTest::sandbox()
 {
   QLineEdit edit;
   edit.setValidator( new UicNumberValidator(&edit) );
-//   displayWidget(edit);
+  showWidgetAndQuitApp(edit);
 }
 
 /*
