@@ -65,11 +65,11 @@ int main(int argc, char **argv)
   QApplication app(argc, argv);
 
   QFontDatabase fontDatabase;
-  qInfo() << "************************************";
-  qInfo() << "font families: " << fontDatabase.families();
-  qInfo() << "************************************";
-  qInfo() << "application font: " << app.font();
-  qInfo() << "************************************";
+  qDebug() << "************************************";
+  qDebug() << "font families: " << fontDatabase.families();
+  qDebug() << "************************************";
+  qDebug() << "application font: " << app.font();
+  qDebug() << "************************************";
 
   UicNumberValidatorTest test;
 

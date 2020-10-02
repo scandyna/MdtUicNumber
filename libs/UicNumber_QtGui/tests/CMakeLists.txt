@@ -6,6 +6,8 @@
 ##############################################################
 include(MdtAddTest)
 
+set(CMAKE_WIN32_EXECUTABLE TRUE)
+
 mdt_add_test(
   NAME UicNumberValidatorTest
   TARGET uicNumberValidatorTest
