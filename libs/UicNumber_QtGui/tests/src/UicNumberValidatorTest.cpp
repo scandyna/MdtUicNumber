@@ -28,6 +28,8 @@
 #include <QFontDatabase>
 #include <QDebug>
 
+#include <iostream>
+
 using Mdt::UicNumber::UicNumberValidator;
 
 void showWidgetForever(QWidget &widget)
@@ -65,6 +67,10 @@ int main(int argc, char **argv)
   QApplication app(argc, argv);
 
   QFontDatabase fontDatabase;
+  std::cout << "************************************\n";
+  std::cout << "application font: " << app.font().toString().toStdString() << "\n";
+  std::cout << "************************************" << std::endl;
+
   qDebug() << "************************************";
   qDebug() << "font families: " << fontDatabase.families();
   qDebug() << "************************************";
