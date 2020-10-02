@@ -52,7 +52,7 @@ void showWidgetAndQuitApp(QWidget &widget)
 void UicNumberValidatorTest::sandbox()
 {
   QLineEdit edit;
-  edit.setValidator( new UicNumberValidator(&edit) );
+  ///edit.setValidator( new UicNumberValidator(&edit) );
   showWidgetAndQuitApp(edit);
 }
 
@@ -65,11 +65,11 @@ int main(int argc, char **argv)
   QApplication app(argc, argv);
 
   QFontDatabase fontDatabase;
-  qDebug() << "************************************";
-  qDebug() << "font families: " << fontDatabase.families();
-  qDebug() << "************************************";
-  qDebug() << "application font: " << app.font();
-  qDebug() << "************************************";
+  qInfo() << "************************************";
+  qInfo() << "font families: " << fontDatabase.families();
+  qInfo() << "************************************";
+  qInfo() << "application font: " << app.font();
+  qInfo() << "************************************";
 
   UicNumberValidatorTest test;
 
