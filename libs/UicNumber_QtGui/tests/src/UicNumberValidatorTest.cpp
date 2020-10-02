@@ -55,7 +55,7 @@ void UicNumberValidatorTest::sandbox()
 {
   QLineEdit edit;
   ///edit.setValidator( new UicNumberValidator(&edit) );
-  showWidgetAndQuitApp(edit);
+  ///showWidgetAndQuitApp(edit);
 }
 
 /*
