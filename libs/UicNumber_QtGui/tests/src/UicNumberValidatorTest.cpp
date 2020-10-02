@@ -24,6 +24,9 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QTimer>
+#include <QFont>
+#include <QFontDatabase>
+#include <QDebug>
 
 using Mdt::UicNumber::UicNumberValidator;
 
@@ -60,6 +63,14 @@ void UicNumberValidatorTest::sandbox()
 int main(int argc, char **argv)
 {
   QApplication app(argc, argv);
+
+  QFontDatabase fontDatabase;
+  qDebug() << "************************************";
+  qDebug() << "font families: " << fontDatabase.families();
+  qDebug() << "************************************";
+  qDebug() << "application font: " << app.font();
+  qDebug() << "************************************";
+
   UicNumberValidatorTest test;
 
   return QTest::qExec(&test, argc, argv);

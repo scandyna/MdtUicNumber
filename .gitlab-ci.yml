@@ -248,7 +248,7 @@ deploy_linux_clang6.0_x86_64_libc++_relwithdebinfo:
   script:
     - cd build
     - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE -o build_tests=True $CONAN_EXTRA_ARGUMENTS ..
-    - ctest --output-on-failure --build-config $BUILD_TYPE .
+    - ctest --output-on-failure --verbose --build-config $BUILD_TYPE .
 
 .deploy_windows_conan:
   extends:
