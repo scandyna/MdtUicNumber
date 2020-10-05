@@ -53,9 +53,11 @@ void showWidgetAndQuitApp(QWidget &widget)
 
 void UicNumberValidatorTest::sandbox()
 {
+  std::cout << "UicNumberValidatorTest::sandbox(): instanciate QLineEdit ..." << std::endl;
   QLineEdit edit;
   ///edit.setValidator( new UicNumberValidator(&edit) );
   ///showWidgetAndQuitApp(edit);
+  std::cout << "UicNumberValidatorTest::sandbox(): END" << std::endl;
 }
 
 /*
