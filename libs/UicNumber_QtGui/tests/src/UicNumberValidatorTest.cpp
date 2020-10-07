@@ -79,7 +79,14 @@ int main(int argc, char **argv)
   qDebug() << "application font: " << app.font();
   qDebug() << "************************************";
 
-  UicNumberValidatorTest test;
+  QLineEdit le;
+  le.show();
+  QTimer::singleShot(20, &le, &QLineEdit::hide);
+  QTimer::singleShot(100, qApp, &QApplication::quit);
 
-  return QTest::qExec(&test, argc, argv);
+  return app.exec();
+
+  ///UicNumberValidatorTest test;
+
+  ///return QTest::qExec(&test, argc, argv);
 }
