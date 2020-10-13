@@ -8,6 +8,7 @@
 #define MDT_UIC_NUMBER_UIC_NUMBER_11_DIGIT_ARRAY_H
 
 #include <array>
+#include <cstdint>
 
 namespace Mdt{ namespace UicNumber{
 
