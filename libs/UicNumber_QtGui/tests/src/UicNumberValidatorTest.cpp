@@ -24,11 +24,6 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QTimer>
-#include <QFont>
-#include <QFontDatabase>
-#include <QDebug>
-
-#include <iostream>
 
 using Mdt::UicNumber::UicNumberValidator;
 
@@ -53,11 +48,9 @@ void showWidgetAndQuitApp(QWidget &widget)
 
 void UicNumberValidatorTest::sandbox()
 {
-  std::cout << "UicNumberValidatorTest::sandbox(): instanciate QLineEdit ..." << std::endl;
   QLineEdit edit;
-  ///edit.setValidator( new UicNumberValidator(&edit) );
-  ///showWidgetAndQuitApp(edit);
-  std::cout << "UicNumberValidatorTest::sandbox(): END" << std::endl;
+  edit.setValidator( new UicNumberValidator(&edit) );
+  showWidgetAndQuitApp(edit);
 }
 
 /*
@@ -68,25 +61,7 @@ int main(int argc, char **argv)
 {
   QApplication app(argc, argv);
 
-  QFontDatabase fontDatabase;
-  std::cout << "************************************\n";
-  std::cout << "application font: " << app.font().toString().toStdString() << "\n";
-  std::cout << "************************************" << std::endl;
+  UicNumberValidatorTest test;
 
-  qDebug() << "************************************";
-  qDebug() << "font families: " << fontDatabase.families();
-  qDebug() << "************************************";
-  qDebug() << "application font: " << app.font();
-  qDebug() << "************************************";
-
-  QLineEdit le;
-  le.show();
-  QTimer::singleShot(20, &le, &QLineEdit::hide);
-  QTimer::singleShot(100, qApp, &QApplication::quit);
-
-  return app.exec();
-
-  ///UicNumberValidatorTest test;
-
-  ///return QTest::qExec(&test, argc, argv);
+  return QTest::qExec(&test, argc, argv);
 }
