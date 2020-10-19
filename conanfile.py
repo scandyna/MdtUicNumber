@@ -15,7 +15,7 @@ class MdtUicNumberConan(ConanFile):
   default_options = {"shared": True,
                      "use_conan_qt": False,
                      "build_tests": False}
-  requires = "MdtCMakeModules/[>=0.14.3]@scandyna/testing"
+  requires = "MdtCMakeModules/[0.14.12]@scandyna/testing"
   generators = "cmake", "cmake_paths", "virtualenv"
   exports_sources = "libs/*", "CMakeLists.txt", "conanfile.py", "LICENSE.txt"
   # If no_copy_source is False, conan copies sources to build directory and does in-source build,
