@@ -191,12 +191,11 @@ Here is a list of available Conan options:
 | -----------------|:------- |:----------------:|--------------|
 | shared           | True    |  [True, False]   | Build as shared library |
 | use_conan_qt     | False   |  [True, False]   | Use [conan Qt](https://github.com/bincrafters/conan-qt) as conan dependency |
-| build_tests      | False   |  [True, False]   | If True, will also require Catch2 |
 
 
 Install the dependencies:
 ```bash
-conan install -s build_type=RelWithDebInfo -o build_tests=True --build=missing ..
+conan install -s build_type=RelWithDebInfo --build=missing ..
 ```
 
 Configure MdtUicNumber:
@@ -232,7 +231,7 @@ for multi configuration build systems, like MSVC.
 
 Install the dependencies:
 ```bash
-conan install -s build_type=RelWithDebInfo -o build_tests=True --build=missing ..
+conan install -s build_type=RelWithDebInfo --build=missing ..
 ```
 
 Configure MdtUicNumber:
@@ -267,7 +266,7 @@ See my [conan-config repository](https://gitlab.com/scandyna/conan-config) for m
 
 Install the dependencies:
 ```bash
-conan install --profile linux_clang6.0_x86_64_libc++ -s build_type=RelWithDebInfo -o build_tests=True --build=missing ..
+conan install --profile linux_clang6.0_x86_64_libc++ -s build_type=RelWithDebInfo --build=missing ..
 ```
 
 Configure MdtUicNumber:

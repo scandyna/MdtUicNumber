@@ -53,7 +53,7 @@ stages:
   script:
     - mkdir build
     - cd build
-    - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE -o build_tests=True $CONAN_EXTRA_ARGUMENTS ..
+    - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE $CONAN_EXTRA_ARGUMENTS ..
     - source activate.sh
     - cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DWARNING_AS_ERROR=ON
                                -DBUILD_TESTS=ON -DENABLE_QT_SUPPORT=ON ..
@@ -77,7 +77,7 @@ stages:
     - conan remote update scandyna https://api.bintray.com/conan/scandyna/public-conan --insert 0 # Check for package in scandyna first
   script:
     - cd build
-    - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE -o build_tests=True $CONAN_EXTRA_ARGUMENTS ..
+    - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE $CONAN_EXTRA_ARGUMENTS ..
     - ctest --output-on-failure .
 
 
@@ -224,7 +224,7 @@ deploy_linux_clang6.0_x86_64_libc++_relwithdebinfo:
   script:
     - mkdir build
     - cd build
-    - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE -o build_tests=True $CONAN_EXTRA_ARGUMENTS ..
+    - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE $CONAN_EXTRA_ARGUMENTS ..
     - ./activate
     - cmake -G"$CMAKE_GENERATOR" $CMAKE_GENERATOR_EXTRA_ARGS -DCMAKE_BUILD_TYPE=$BUILD_TYPE
             -DCMAKE_PREFIX_PATH="$BOOST_PREFIX_PATH;$QT_PREFIX_PATH"
@@ -246,7 +246,7 @@ deploy_linux_clang6.0_x86_64_libc++_relwithdebinfo:
     - conan remote update scandyna https://api.bintray.com/conan/scandyna/public-conan --insert 0 # Check for package in scandyna first
   script:
     - cd build
-    - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE -o build_tests=True $CONAN_EXTRA_ARGUMENTS ..
+    - conan install --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE $CONAN_EXTRA_ARGUMENTS ..
     - ctest --output-on-failure --verbose --build-config $BUILD_TYPE .
 
 .deploy_windows_conan:
