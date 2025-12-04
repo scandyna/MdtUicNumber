@@ -1,5 +1,5 @@
 ##############################################################
-#  Copyright Philippe Steinmann 2020 - 2020.
+#  Copyright Philippe Steinmann 2020 - 2025.
 #  Distributed under the Boost Software License, Version 1.0.
 #  (See accompanying file LICENSE.txt or copy at
 #  https://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +14,7 @@ include(MdtInstallLibrary)
 add_library(Mdt_UicNumber INTERFACE)
 add_library(Mdt::UicNumber ALIAS Mdt_UicNumber)
 
-target_compile_features(Mdt_UicNumber INTERFACE cxx_std_14)
+# target_compile_features(Mdt_UicNumber INTERFACE cxx_std_14)
 
 # if(BUILD_USE_IPO_LTO)
 #   set_target_properties(QCoreApplicationForNonQtUsage

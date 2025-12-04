@@ -1,53 +1,28 @@
-from conans import ConanFile, CMake, tools
-import os
+from conan import ConanFile
+from conan.tools.env import VirtualBuildEnv
+from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake
 
-
+# This recipe is only to install dependencies to build MdtUicNumber
+# The recipes to create packages are in packaging/conan/ subfolder
 class MdtUicNumberConan(ConanFile):
-  name = "MdtUicNumber"
-  #version = "0.1"
+  name = "mdtuicnumber"
   license = "BSD 3-Clause"
   url = "https://gitlab.com/scandyna/mdtuicnumber"
   description = "C++ library to work with UIC numbers"
   settings = "os", "compiler", "build_type", "arch"
-  options = {"shared": [True, False],
-             "use_conan_qt": [True, False]}
-  default_options = {"shared": True,
-                     "use_conan_qt": False}
-  build_requires = "MdtCMakeModules/[>=0.14.12]@scandyna/testing", "Catch2/[>=2.11.1]@catchorg/stable"
-  generators = "cmake", "cmake_paths", "virtualenv"
-  exports_sources = "libs/*", "CMakeLists.txt", "conanfile.py", "LICENSE.txt"
-  # If no_copy_source is False, conan copies sources to build directory and does in-source build,
-  # resulting having build files installed in the package
-  # See also: https://github.com/conan-io/conan/issues/350
-  no_copy_source = True
-
-  def set_version(self):
-    if os.path.exists(".git"):
-      git = tools.Git()
-      self.version = "%s" % (git.get_tag())
+  options = {"shared": [True, False]}
+  default_options = {"shared": True}
+  generators = "CMakeDeps", "VirtualBuildEnv"
 
   def requirements(self):
+    self.requires("qt/5.15.16")
 
-    # Building 5.14.x causes currently problems (8.04.2020)
-    # As workaround, try fix a known version that we can build
-    if self.options.use_conan_qt:
-      self.requires("qt/5.12.7@bincrafters/stable")
+  def build_requirements(self):
+    self.test_requires("catch2/2.13.10")
+    self.test_requires("mdtcmakemodules/0.21.0@scandyna/testing")
 
-
-  def configure_cmake(self):
-    cmake = CMake(self)
-    cmake.definitions["FROM_CONAN_PROJECT_VERSION"] = self.version
-    cmake.definitions["ENABLE_QT_SUPPORT"] = "ON"
-    cmake.definitions["WARNING_AS_ERROR"] = "ON"
-    return cmake
-
-
-  def build(self):
-    cmake = self.configure_cmake()
-    cmake.configure()
-    cmake.build()
-
-
-  def package(self):
-    cmake = self.configure_cmake()
-    cmake.install()
+  def generate(self):
+    tc = CMakeToolchain(self)
+    # tc.variables["FROM_CONAN_PROJECT_VERSION"] = self.version
+    # tc.variables["ENABLE_QT_SUPPORT"] = "ON"
+    tc.generate()

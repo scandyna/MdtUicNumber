@@ -1,9 +1,22 @@
+[[_TOC_]]
+
 # MdtUicNumber
 
 C++ library to work with UIC numbers.
 
 This library is based on informations found on the web, starting from
 Wikipedia [UIC identification marking for tractive stock](https://en.wikipedia.org/wiki/UIC_identification_marking_for_tractive_stock)
+
+This project is composed in some libraries:
+
+| Package           | CMake target         | Description               | Main dependency |
+|:------------------|:---------------------|:--------------------------|:----------------|
+|mdtuicnumber       |Mdt0::UicNumber       |Core lib                   |None             |
+|mdtuicnumber_qtcore|Mdt0::UicNumber_Qt    |Mainly adds unicode support|QtCore           |
+|mdtuicnumber_qtgui |Mdt0::UicNumber_QtGui |Mainly offers QValidators  |QtGui            |
+
+Note: the `Mdt0::UicNumber_Qt` target is wrongly named, and could change in the future.
+See: https://gitlab.com/scandyna/mdtuicnumber/-/issues/3
 
 # Usage
 
@@ -25,13 +38,8 @@ For a overview how to install them, see https://gitlab.com/scandyna/build-and-in
 
 In your source directory, create a CMakeLists.txt:
 ```cmake
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.22)
 project(MyApp)
-
-if(EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
-  include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
-  conan_basic_setup(NO_OUTPUT_DIRS)
-endif()
 
 find_package(Threads REQUIRED)
 find_package(Mdt0 COMPONENTS UicNumber REQUIRED)
@@ -45,11 +53,12 @@ target_link_libraries(myApp Mdt0::UicNumber)
 In your source directory, create a `conanfile.txt`:
 ```conan
 [requires]
-MdtUicNumber/x.y.z@scandyna/testing
+mdtuicnumber/x.y.z@scandyna/testing
 
 [generators]
-cmake
-virtualenv
+CMakeDeps
+CMakeToolchain
+VirtualBuildEnv
 ```
 
 Create a build directory and cd to it:
@@ -60,24 +69,37 @@ cd build
 
 Install the dependencies:
 ```bash
-conan install -s build_type=Release --build=missing ..
+conan install --output-folder . --profile:build $CONAN_PROFILE_BUILD --profile:host $CONAN_PROFILE_HOST --settings:build build_type=Release --settings:host build_type=$BUILD_TYPE --options:host "&:shared=$BUILD_SHARED_LIBS"  ..
 ```
 
 Activate the build environment:
 ```bash
-source activate.sh
+source conanbuild.sh
 ```
 
 Configure your project:
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake-gui .
 ```
 
 To restore the standard environment:
 ```bash
-source deactivate.sh
+source deactivate_conanbuild.sh
 ```
+
+# Work on MdtUicNumber
+
+## Build
+
+See [BUILD](BUILD.md).
+
+## Create Conan package
+
+See [README](packaging/conan/README.md) in the conan packaging folder.
+
+
+# OLD stuff
 
 ## Project configuration without Conan
 
@@ -164,132 +186,3 @@ cmake --build . --target INSTALL --config Release
 
 Note that the `--config Release` is only mandatory
 for multi configuration build systems, like MSVC.
-
-
-# Work on MdtUicNumber
-
-This chapter is like the previous (Install MdtUicNumber),
-but covers some more details, like the dependencies and options to run the unit tests.
-
-## Required tools and libraries
-
-Some tools and libraries are required to build MdtUicNumber:
- - Git
- - CMake
- - Conan (optional)
- - A compiler (Gcc or Clang or MSVC)
- - Qt5 (optional, for Qt unit tests, can be managed by Conan)
- - Make (optional)
-
-For a overview how to install them, see https://gitlab.com/scandyna/build-and-install-cpp
-
-## Configure MdtUicNumber with Conan
-
-Here is a list of available Conan options:
-
-| Option           | Default | Possible Values  | Explanations |
-| -----------------|:------- |:----------------:|--------------|
-| shared           | True    |  [True, False]   | Build as shared library |
-| use_conan_qt     | False   |  [True, False]   | Use [conan Qt](https://github.com/bincrafters/conan-qt) as conan dependency |
-
-
-Install the dependencies:
-```bash
-conan install -s build_type=RelWithDebInfo --build=missing ..
-```
-
-Configure MdtUicNumber:
-```bash
-source activate.sh
-cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTS=ON -DCMAKE_INSTALL_PREFIX=~/opt/MdtUicNumber ..
-cmake-gui .
-```
-
-It is also possible to run Qt tests.
-Those tests do not need a very recent version of Qt,
-so using the system wide installed one on Linux is sufficient.
-
-To enable Qt support, add the `-DENABLE_QT_SUPPORT=ON` to the cmake configuration command line,
-or enable it with cmake-gui.
-
-## Build MdtUicNumber and run the tests
-
-Build:
-```bash
-cmake --build . --config RelWithDebInfo
-```
-
-To run the tests:
-```bash
-ctest . --output-on-failure -C RelWithDebInfo -j4
-```
-
-Note that the `--config RelWithDebInfo` is only mandatory
-for multi configuration build systems, like MSVC.
-
-## Configure and build with ASan and UBSan
-
-Install the dependencies:
-```bash
-conan install -s build_type=RelWithDebInfo --build=missing ..
-```
-
-Configure MdtUicNumber:
-```bash
-source activate.sh
-cmake -DCMAKE_BUILD_TYPE=Instrumented -DBUILD_TESTS=ON -DCMAKE_INSTALL_PREFIX=~/opt/MdtUicNumber ..
-cmake-gui .
-```
-
-Set the various options, like `BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL`,
-`BUILD_TYPE_INSTRUMENTED_USE_DEBUG_SYMBOLS` and `BUILD_TYPE_INSTRUMENTED_DEFINE_NDEBUG`.
-
-Build:
-```bash
-cmake --build . --config Instrumented
-```
-or:
-```bash
-make -j4
-```
-
-To run the tests:
-```bash
-ctest . --output-on-failure -C Instrumented -j4
-```
-
-## Configure and build with Clang
-
-This requires modifications in the `settings.yml` Conan configuration,
-and also some profile files.
-See my [conan-config repository](https://gitlab.com/scandyna/conan-config) for more informations.
-
-Install the dependencies:
-```bash
-conan install --profile linux_clang6.0_x86_64_libc++ -s build_type=RelWithDebInfo --build=missing ..
-```
-
-Configure MdtUicNumber:
-```bash
-source activate.sh
-cmake ..
-cmake-gui .
-```
-
-Build and run the tests:
-```bash
-make -j4
-make test
-```
-
-# Create a Conan package
-
-The package version is picked up from git tag.
-If working on MdtUicNumber, go to the root of the source tree:
-```bash
-git tag x.y.z
-conan create . scandyna/testing --profile $CONAN_PROFILE -s build_type=$BUILD_TYPE
-```
-
-Above examples will generate a package that uses the Qt version that is installed on the system,
-or passed to the `CMAKE_PREFIX_PATH` of your build.

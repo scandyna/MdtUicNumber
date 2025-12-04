@@ -1,24 +1,15 @@
 ##############################################################
-#  Copyright Philippe Steinmann 2020 - 2020.
+#  Copyright Philippe Steinmann 2020 - 2025.
 #  Distributed under the Boost Software License, Version 1.0.
 #  (See accompanying file LICENSE.txt or copy at
 #  https://www.boost.org/LICENSE_1_0.txt)
 ##############################################################
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.22)
 
 # CMAKE_PREFIX_PATH is empty before any call to project()
 # Because set_project_version() does not exist,
 # we call the project command twice (is there a cleaner solution?)
 project(MdtUicNumber)
-
-#######################
-# Conan
-#######################
-
-if(EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
-  include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
-  conan_basic_setup(NO_OUTPUT_DIRS)
-endif()
 
 #######################################################
 # Project definition with versionning got from git tag
@@ -50,7 +41,20 @@ include(MdtSanitizers)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
 
-option(ENABLE_QT_SUPPORT "Enable Qt support" OFF)
+
+# Internal dependencies:
+# UicNumber <-- UicNumber_Qt <-- UicNumber_QtGui
+#
+
+option(BUILD_UIC_NUMBER "Build UicNumber" ON)
+option(USE_UIC_NUMBER_IMPORT_TARGET "Use UicNumber IMPORT TARGET (relevant only while creating packages)" OFF)
+
+option(BUILD_UIC_NUMBER_QT_CORE "Build UicNumber with QtCore support" ON)
+option(USE_UIC_NUMBER_QT_CORE_IMPORT_TARGET "Use UicNumber_Qt IMPORT TARGET (relevant only while creating packages)" OFF)
+
+option(BUILD_UIC_NUMBER_QT_GUI "Build UicNumber with QtCore support" ON)
+
+
 option(BUILD_TESTS "Build the tests" OFF)
 option(BUILD_BENCHMARKS "Build the benchmarks" OFF)
 option(BUILD_CPP_API_DOC "Generate Doxyfile for C++ API documentation" OFF)
@@ -63,9 +67,6 @@ set_property(CACHE BUILD_TYPE_INSTRUMENTED_OPTIMIZATION_LEVEL PROPERTY STRINGS $
 option(BUILD_TYPE_INSTRUMENTED_USE_DEBUG_SYMBOLS "Add debug symbols (-g on Gcc/Clang, /DEBUG on MSVC)" ON)
 option(BUILD_TYPE_INSTRUMENTED_DEFINE_NDEBUG "Set NDEBUG definition for Instrumented build (will disable assert)" OFF)
 
-if(ENABLE_QT_SUPPORT)
-  option(BUILD_SHARED_LIBS "Build shared libraries (has sense for some Qt support libraries)" ON)
-endif()
 
 mdt_add_address_sanitizer_option_if_available(SANITIZER_ENABLE_ADDRESS
   HELP_STRING "Enable address sanitizer for Instrumented build"
@@ -102,9 +103,9 @@ endif()
 
 
 # See https://stackoverflow.com/questions/46798456/handling-gccs-noexcept-type-warning
-if( (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU") AND (${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER_EQUAL 7.2) )
-  add_compile_options(-Wno-noexcept-type)
-endif()
+# if( (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU") AND (${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER_EQUAL 7.2) )
+#   add_compile_options(-Wno-noexcept-type)
+# endif()
 
 #######################
 # Paths to dependencies
@@ -119,17 +120,33 @@ add_qt5_to_cmake_prefix_path("${QT_PREFIX_PATH}")
 # Dependencies
 #######################
 
-if(BUILD_TESTS)
-  find_package(Catch2 REQUIRED)
+if(BUILD_UIC_NUMBER_QT_CORE)
+  find_package(Qt5 COMPONENTS Core REQUIRED)
 endif()
 
-if(ENABLE_QT_SUPPORT)
-  find_package(Threads REQUIRED)
-  find_package(Qt5 COMPONENTS Core Gui REQUIRED)
-  if(BUILD_TESTS)
+if(BUILD_UIC_NUMBER_QT_GUI)
+  find_package(Qt5 COMPONENTS Gui REQUIRED)
+endif()
+
+if(USE_UIC_NUMBER_IMPORT_TARGET)
+  find_package(Mdt${MdtUicNumber_VERSION_MAJOR} REQUIRED COMPONENTS UicNumber)
+  add_library(Mdt::UicNumber ALIAS Mdt${MdtUicNumber_VERSION_MAJOR}::UicNumber)
+endif()
+
+if(USE_UIC_NUMBER_QT_CORE_IMPORT_TARGET)
+  find_package(Mdt${MdtUicNumber_VERSION_MAJOR} REQUIRED COMPONENTS UicNumber_Qt)
+  add_library(Mdt::UicNumber_Qt ALIAS Mdt${MdtUicNumber_VERSION_MAJOR}::UicNumber_Qt)
+endif()
+
+
+if(BUILD_TESTS)
+  find_package(Catch2 REQUIRED)
+  if(BUILD_UIC_NUMBER_QT_CORE OR BUILD_UIC_NUMBER_QT_GUI)
     find_package(Qt5 COMPONENTS Test Widgets REQUIRED)
   endif()
+
 endif()
+
 
 #######################
 # Windows specific
@@ -146,16 +163,16 @@ endif()
 #######################
 
 if(SANITIZER_ENABLE_ADDRESS)
-  mdt_build_with_address_sanitizer(BUILD_TYPES Instrumented)
+  mdt_build_with_address_sanitizer(BUILD_TYPES Instrumented RelWithDebInfo Debug)
 endif()
 if(SANITIZER_ENABLE_MEMORY)
-  mdt_build_with_memory_sanitizer(BUILD_TYPES Instrumented)
+  mdt_build_with_memory_sanitizer(BUILD_TYPES Instrumented RelWithDebInfo Debug)
 endif()
 if(SANITIZER_ENABLE_UNDEFINED)
-  mdt_build_with_undefined_sanitizer(BUILD_TYPES Instrumented)
+  mdt_build_with_undefined_sanitizer(BUILD_TYPES Instrumented RelWithDebInfo Debug)
 endif()
 if(SANITIZER_ENABLE_THREAD)
-  mdt_build_with_thread_sanitizer(BUILD_TYPES Instrumented)
+  mdt_build_with_thread_sanitizer(BUILD_TYPES Instrumented RelWithDebInfo Debug)
 endif()
 
 #######################
@@ -204,11 +221,12 @@ mdt_install_namespace_package_config_file(
 # Qt
 #######################
 
-# TODO: should be imposed on tests only ? NOTE: not a target property, will it be propagated ??
-if(ENABLE_QT_SUPPORT)
+if(BUILD_UIC_NUMBER_QT_CORE OR BUILD_UIC_NUMBER_QT_GUI)
   add_definitions(-DQT_NO_CAST_DEFINITIONS -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO_ASCII -DQT_NO_CAST_FROM_BYTEARRAY)
   set(CMAKE_AUTOMOC ON)
-  set(CMAKE_AUTOUIC ON)
+  if(BUILD_TESTS)
+    set(CMAKE_AUTOUIC ON)
+  endif()
 endif()
 
 #######################
@@ -223,10 +241,14 @@ if(BUILD_TESTS)
   enable_testing()
 endif()
 
+if(BUILD_UIC_NUMBER)
+  add_subdirectory(libs/UicNumber)
+endif()
 
-add_subdirectory(libs/UicNumber)
-
-if(ENABLE_QT_SUPPORT)
+if(BUILD_UIC_NUMBER_QT_CORE)
   add_subdirectory(libs/UicNumber_Qt)
+endif()
+
+if(BUILD_UIC_NUMBER_QT_GUI)
   add_subdirectory(libs/UicNumber_QtGui)
 endif()
