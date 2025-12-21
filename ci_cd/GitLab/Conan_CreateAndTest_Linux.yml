@@ -1,18 +1,18 @@
 
 include:
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_CreateAndTest_NoArch@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_CreateAndTest_NoArch@0.0.23
     inputs:
       job_name_suffix: '_Tier1'
       components:
         - 'mdtuicnumber'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_CreateAndTest_NoArch@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_CreateAndTest_NoArch@0.0.23
     inputs:
       job_name_suffix: '_Tier2'
       components:
         - 'mdtuicnumber_qtcore'
       needs:
         - 'Conan_CreateAndTest_NoArch_Tier1'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_CreateAndTest_Ubuntu-24-04_gcc13_x86_64@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_CreateAndTest_Ubuntu-24-04_gcc13_x86_64@0.0.23
     inputs:
       job_name_suffix: '_Tier3'
       components:

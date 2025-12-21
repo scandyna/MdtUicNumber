@@ -1,5 +1,5 @@
 ##############################################################
-#  Copyright Philippe Steinmann 2020 - 2020.
+#  Copyright Philippe Steinmann 2020 - 2025.
 #  Distributed under the Boost Software License, Version 1.0.
 #  (See accompanying file LICENSE.txt or copy at
 #  https://www.boost.org/LICENSE_1_0.txt)
@@ -26,7 +26,7 @@ target_include_directories(Mdt_UicNumber_Qt
 
 target_link_libraries(Mdt_UicNumber_Qt
   INTERFACE
-    Mdt::UicNumber Qt5::Core 
+    Mdt::UicNumber Qt6::Core
 )
 
 # generate_export_header(Mdt_UicNumber_Qt)

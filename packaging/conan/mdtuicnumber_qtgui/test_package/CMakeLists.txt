@@ -17,7 +17,7 @@ enable_testing()
 mdt_add_test(
   NAME UicNumberQtGuiTest
   TARGET uicNumberQtGuiTest
-  DEPENDENCIES Mdt0::UicNumber_QtGui Qt5::Widgets
+  DEPENDENCIES Mdt0::UicNumber_QtGui Qt6::Widgets
   SOURCE_FILES
     main.cpp
 )

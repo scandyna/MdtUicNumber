@@ -2,7 +2,7 @@
  **
  ** MdtUicNumber - A C++ library to work with UIC numbers
  **
- ** Copyright (C) 2020-2020 Philippe Steinmann.
+ ** Copyright (C) 2020-2025 Philippe Steinmann.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
 #include "Mdt/UicNumber/Algorithm.h"
 #include <QChar>
 #include <QString>
-#include <QStringRef>
+#include <QStringView>
 #include <cassert>
 
 namespace Mdt{ namespace UicNumber{
@@ -42,9 +42,13 @@ namespace Mdt{ namespace UicNumber{
   inline
   int toIntQt(const QString & str, int position, int length)
   {
-    assert( (position+length) <= static_cast<int>(str.length()) );
+    assert(position >= 0);
+    assert(length >= 0);
+    assert( (position+length) <= str.length() );
 
-    return QStringRef(&str, position, length).toInt();
+    QStringView sv(str);
+
+    return sv.sliced(position, length).toInt();
   }
 
   /*! \brief Validate the content of a string

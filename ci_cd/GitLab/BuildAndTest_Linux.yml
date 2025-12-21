@@ -1,23 +1,23 @@
 
 include:
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_gcc13_x86_64@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_gcc13_x86_64@0.0.23
     inputs:
       build_type: 'Debug'
       shared_libs: 'True'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_gcc13_x86_64@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_gcc13_x86_64@0.0.23
     inputs:
       build_type: 'Release'
       shared_libs: 'True'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_gcc13_x86_64@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_gcc13_x86_64@0.0.23
     inputs:
       build_type: 'Release'
       shared_libs: 'False'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_clang18_x86_64_libcxx@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_clang18_x86_64_libcxx@0.0.23
     inputs:
       build_type: 'Debug'
       shared_libs: 'True'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_clang18_x86_64_libcxx@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_clang18_x86_64_libcxx@0.0.23
     inputs:
       build_type: 'Release'
       shared_libs: 'True'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_gcc13_x86_64_ASanUBSan@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/BuildAndTest_Ubuntu-24-04_gcc13_x86_64_ASanUBSan@0.0.23

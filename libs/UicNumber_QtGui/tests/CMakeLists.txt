@@ -9,7 +9,7 @@ include(MdtAddTest)
 mdt_add_test(
   NAME UicNumberValidatorTest
   TARGET uicNumberValidatorTest
-  DEPENDENCIES Mdt::UicNumber_QtGui Qt5::Test Qt5::Widgets
+  DEPENDENCIES Mdt::UicNumber_QtGui Qt6::Test Qt6::Widgets
   SOURCE_FILES
     src/UicNumberValidatorTest.cpp
 )

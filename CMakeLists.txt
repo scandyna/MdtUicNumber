@@ -108,24 +108,15 @@ endif()
 # endif()
 
 #######################
-# Paths to dependencies
-#######################
-
-include(AddQt5ToCMakePrefixPath)
-
-set(QT_PREFIX_PATH CACHE PATH "Path to the root of Qt distribution. (For example: /opt/qt/Qt5/5.13.0/gcc_64). If empty, system distribution is considered.")
-add_qt5_to_cmake_prefix_path("${QT_PREFIX_PATH}")
-
-#######################
 # Dependencies
 #######################
 
 if(BUILD_UIC_NUMBER_QT_CORE)
-  find_package(Qt5 COMPONENTS Core REQUIRED)
+  find_package(Qt6 COMPONENTS Core REQUIRED)
 endif()
 
 if(BUILD_UIC_NUMBER_QT_GUI)
-  find_package(Qt5 COMPONENTS Gui REQUIRED)
+  find_package(Qt6 COMPONENTS Gui REQUIRED)
 endif()
 
 if(USE_UIC_NUMBER_IMPORT_TARGET)
@@ -142,7 +133,7 @@ endif()
 if(BUILD_TESTS)
   find_package(Catch2 REQUIRED)
   if(BUILD_UIC_NUMBER_QT_CORE OR BUILD_UIC_NUMBER_QT_GUI)
-    find_package(Qt5 COMPONENTS Test Widgets REQUIRED)
+    find_package(Qt6 COMPONENTS Test Widgets REQUIRED)
   endif()
 
 endif()

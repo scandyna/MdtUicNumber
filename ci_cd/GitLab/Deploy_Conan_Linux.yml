@@ -1,16 +1,16 @@
 
 include:
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_Deploy_NoArch@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_Deploy_NoArch@0.0.23
     inputs:
       job_name_suffix: '_Tier1'
       components:
         - 'mdtuicnumber'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_Deploy_NoArch@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_Deploy_NoArch@0.0.23
     inputs:
       job_name_suffix: '_Tier2'
       components:
         - 'mdtuicnumber_qtcore'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_Deploy_Ubuntu-24-04_gcc13_x86_64@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_Deploy_Ubuntu-24-04_gcc13_x86_64@0.0.23
     inputs:
       job_name_suffix: '_Tier3'
       components:
@@ -20,7 +20,7 @@ include:
         - 'Release'
       shared_libs:
         - 'True'
-  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_Deploy_Ubuntu-24-04_clang18_x86_64_libcxx@0.0.22
+  - component: $CI_SERVER_FQDN/scandyna/gitlab-ci-cd-cpp-components/Conan_Deploy_Ubuntu-24-04_clang18_x86_64_libcxx@0.0.23
     inputs:
       job_name_suffix: '_Tier3'
       components:
